@@ -1,0 +1,5 @@
+{% load i18n %}
+Регистрационные данные abiturient.ulsu.ru:
+
+Логин - {{login}}
+Пароль - {{password}}

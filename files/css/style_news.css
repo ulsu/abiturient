@@ -1,0 +1,47 @@
+.tab_faculty{
+margin-top:20px;
+}
+#data, .text_news,.next_news{
+font-family:segoe ui;
+font-size:14px;
+}
+#data{
+font-weight:bold;
+color:#52A365;
+}
+.news_block{
+border:2px solid #52A365;
+padding-bottom:20px;
+}
+.text_news{
+padding:20px 20px 0px 20px;
+float:left;
+}
+
+.expand {
+height:12px;
+width:50px;
+background-color:#52A365;
+float:right;
+margin-right:15px;
+cursor: pointer;
+}
+.expand li {
+float:left;
+margin:0 4px 0 4px;
+color:#fff;
+list-style: normal!important;
+}
+.expand ul {
+margin: -6px 0 0 23px;
+padding:0;
+}
+
+
+
+.next_news{
+display:none;
+clear:both;
+padding:0px 20px 0px 20px;
+
+}

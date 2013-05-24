@@ -1,0 +1,293 @@
+		*{
+			margin:0;
+			padding:0;
+			
+			border:none;
+		}
+		
+		
+		div.domtab{
+			
+			width:100%;
+			font-size:90%;
+		}
+		ul.domtabs{
+			float:left;
+			width:100%;
+			margin:2em 0 0 0;				
+		}
+		ul.domtabs li{
+			float:left;
+			padding:0 1px 0 0;
+			list-style:none;
+			
+		}
+		ul.domtabs a:link,
+		ul.domtabs a:visited,
+		ul.domtabs a:active,
+		ul.domtabs a:hover{
+			padding:.2em 1em;
+			display:block;
+			color:#fff;
+			text-decoration:none;
+			font-family:segoe ui;
+			font-weight:normal;
+			border-bottom:1px solid #fff;
+			margin-top:3px;
+			
+			
+		}
+		#shool_color{
+			background:#52a365;
+		}
+		#bachelor_color{
+			background:#e2af13;
+		}
+		#college_color{
+			background:#d98205;
+		}
+		#foreigner_color{
+			background:#8a5ead;
+		}
+		#other_vuz_color{
+			background:#31a8e2;
+		}
+		#Olympics_color{
+			background:#00af80;
+		}
+		#programms_color{
+			background:#cbb274
+		}
+		#what_color{
+			background:#7484d7;
+		}
+		
+		
+		
+
+		html>body ul.domtabs a:link{
+			height:auto;
+			min-height:25px;
+			
+		}
+		html>body ul.domtabs a:active,
+		html>body ul.domtabs a:hover,
+		html>body ul.domtabs a:visited{
+			height:auto;
+			min-height:25px;
+			
+		}
+		
+		ul.domtabs a:hover{
+			background:#696;
+		}
+		div.domtab div{
+			clear:both;
+			width:auto;
+			background:#fcfcfc;
+			color:#222222;
+			font-family:segoe ui;
+			font-weight:normal;
+			
+			
+		}
+		
+		ul.domtabs li.active a:link,
+		ul.domtabs li.active a:visited,
+		ul.domtabs li.active a:active,
+		ul.domtabs li.active a:hover{
+			background:#52a365;
+			color:#fff;
+			font-family:segoe ui;
+			font-weight:normal;
+			margin-top:0;
+			
+		}
+		
+		#shool_div{
+		border:2px solid #52a365;
+		position:relative;
+		height:100%;
+		}
+		#bachelor_div{
+			border:2px solid #e2af13;
+			height:auto !important;
+		}
+		#college_div{
+			border:2px solid #d98205;
+			height:auto !important;
+		}
+		#foreigner_div{
+			border:2px solid #8a5ead;
+			height:auto !important;
+		}
+		#other_vuz_div{
+			border:2px solid #31a8e2;
+			height:auto !important;
+		}
+		#Olympics_div{
+			border:2px solid #00af80;
+			height:auto !important;
+		}
+		#programms_div{
+			border:2px solid #cbb274;
+			height:auto !important;
+		}
+		#what_div{
+			border:2px solid #7484d7;
+			height:auto !important;
+		}
+		ul.domtabs li.active #shool_color:link,
+		ul.domtabs li.active #shool_color:visited,
+		ul.domtabs li.active #shool_color:active,
+		ul.domtabs li.active #shool_color:hover{
+			border-bottom:4px solid #52a365;		
+		}
+		ul.domtabs li.active #bachelor_color:link,
+		ul.domtabs li.active #bachelor_color:visited,
+		ul.domtabs li.active #bachelor_color:active,
+		ul.domtabs li.active #bachelor_color:hover{
+			border-bottom:4px solid #e2af13;		
+		}
+		ul.domtabs li.active #college_color:link,
+		ul.domtabs li.active #college_color:visited,
+		ul.domtabs li.active #college_color:active,
+		ul.domtabs li.active #college_color:hover{
+			border-bottom:4px solid #d98205;		
+		}
+		ul.domtabs li.active #foreigner_color:link,
+		ul.domtabs li.active #foreigner_color:visited,
+		ul.domtabs li.active #foreigner_color:active,
+		ul.domtabs li.active #foreigner_color:hover{
+			border-bottom:4px solid #8a5ead;		
+		}
+		ul.domtabs li.active #other_vuz_color:link,
+		ul.domtabs li.active #other_vuz_color:visited,
+		ul.domtabs li.active #other_vuz_color:active,
+		ul.domtabs li.active #other_vuz_color:hover{
+			border-bottom:4px solid #31a8e2;		
+		}
+		ul.domtabs li.active #Olympics_color:link,
+		ul.domtabs li.active #Olympics_color:visited,
+		ul.domtabs li.active #Olympics_color:active,
+		ul.domtabs li.active #Olympics_color:hover{
+			border-bottom:4px solid #00af80;		
+		}
+		ul.domtabs li.active #programms_color:link,
+		ul.domtabs li.active #programms_color:visited,
+		ul.domtabs li.active #programms_color:active,
+		ul.domtabs li.active #programms_color:hover{
+			border-bottom:4px solid #cbb274;		
+		}
+		ul.domtabs li.active #what_color:link,
+		ul.domtabs li.active #what_color:visited,
+		ul.domtabs li.active #what_color:active,
+		ul.domtabs li.active #what_color:hover{
+			border-bottom:4px solid #7484d7;		
+		}
+		
+		
+		
+		#domtabprintview{
+			float:right;
+			padding-right:1em;
+			text-align:right;
+		}
+		#domtabprintview a:link,
+		#domtabprintview a:visited,
+		#domtabprintview a:active,
+		#domtabprintview a:hover{
+			color:#fff;
+			font-family:segoe ui;
+			font-weight:normal;
+		}
+		p{
+			margin:0 0 .5em 0;
+			line-height:1.3em;
+			text-align:justify;
+			z-index:3;
+			font-size:;
+		}
+		h2{
+			font-size:1.3em;
+			color:#cfc;
+			text-transform:uppercase;
+			font-family:"Trebuchet MS",Arial,Sans-Serif;
+			padding:0 0 .7em .2em;
+		}
+		h1{
+			font-size:2em;
+			text-align:center;
+			font-weight:normal;
+			text-transform:uppercase;
+			font-family:"Trebuchet MS",Arial,Sans-Serif;
+			padding:.5em 0;
+			background:#000;
+			border-bottom:1px solid #666;
+		}
+		pre{
+			font-size:1.2em;
+			padding:1em;
+		}
+		div.domtab div a:link,
+		div.domtab div a:visited,
+		div.domtab div a:active
+		{
+			color:#fff;
+			display:block;
+			padding:1em;
+			font-weight:bold;
+			font-size:1.3em;
+		}
+		div.domtab div h2 a,
+		div.domtab div h2 a:hover,
+		div.domtab div h2 a:active
+		{
+			color:#cfc;
+			display:inline;
+			padding:0;
+			font-weight:normal;
+			font-size:1em;
+		}
+		
+/* other scheme! */
+#other{
+	font-size:.8em;
+	margin-left:.3em;
+	width:60em;
+	margin-bottom:3em;
+	float:left;
+}
+div#other.domtab div{
+	clear:both;
+	width:54em;
+	background:#669;
+	color:#fff;
+	padding:1em 3em;
+}
+		
+#other ul.domtabs a:hover{
+	background:#669;
+}
+div#other ul.domtabs li.active a:link,
+div#other ul.domtabs li.active a:visited,
+div#other ul.domtabs li.active a:active,
+div#other ul.domtabs li.active a:hover{
+	background:#ccc;
+	color:#fff;
+}
+#other div{
+	float:left;
+}
+ul.prevnext{
+	float:left;
+	width:100%;
+}
+ul.prevnext li{
+	float:left;
+	width:49%;
+}
+ul.prevnext li.next{
+	float:right;
+	text-align:right;
+}

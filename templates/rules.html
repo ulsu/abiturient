@@ -1,0 +1,126 @@
+{% extends "index.html" %}
+{% load static %}
+{% get_static_prefix as STATIC_URL %}
+
+{% block head %}
+	Правила приема
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript">  
+$(document).ready(function(){
+    $('div.big-block,div.big-block').click(function(){
+      if($(this).attr('id') != 'download')
+      {
+        $('div.big-block,div.big-block').each(function(){
+             $(this).animate({
+                opacity: 0
+                }, 1000);
+        })
+        
+        $('#block-content').animate({
+            opacity: 0
+        }, 2000,
+            function(){
+                $('.blocks-container').slideToggle();
+                $(this).css("background-image","none");
+                $(this).css("opacity","1");
+                $('div#prev-btn').show();
+                $(document).find('#desc').slideToggle();
+            }
+        );
+        
+        $.ajax({
+           url: "/rules/ajax/",
+           method: "POST",
+           data: {id: $(this).attr("id")},
+           onLoad: function(){$(document).find('.load-block').show()},
+           success: function(data){
+                
+                $(document).find("div#desc").html(data);
+                $(document).find("div.load-block").hide();
+           }
+        });
+      }
+    });
+    //
+    $('div#prev-btn').click(function(){
+            var k = Math.floor(Math.random()*6);
+
+            $('html,body').animate({scrollTop:0}, 'fast');
+            
+            $('#block-content').animate({
+                opacity: 0
+            }, 1000,
+                function(){
+                    $('div#prev-btn').hide();
+                    $(document).find('#desc').slideToggle();
+                    $('div#block-content').css("background-image","url('/static/image/foto"+k+".png')");
+                    $('.blocks-container').slideToggle();
+                    
+                }
+            );
+
+            $('#block-content').animate({
+                opacity: 1
+            }, 2000,
+                function(){
+                    $('div.big-block,div.big-block').each(function(){
+                        $(this).animate({
+                            opacity: 1
+                        }, 200);
+                    });
+                }
+            );
+            
+            
+    });
+    //
+});
+</script>
+<div id="info-color-border" style="border: 1px black solid;margin-top: 40px;">
+<div id="block-content">
+
+<div class="load-block"></div>
+<div id="desc" style="display: none;padding: 20px;">
+</div>
+<div id="prev-btn" class="prev-button" style="cursor: pointer;margin: 15px;padding: 5px;display: none;width: 100px;">
+    <img src="/static/image/edit.png" style="position: absolute;">
+    <div style="margin-top:13px; margin-left: 45px;">Назад</div>
+</div>
+<div style="padding: 28px;">
+
+   <div class="blocks-container"> 
+   
+    <a href="/media/pp.doc">
+        <div class="big-block" id="download">
+            <div class="text-block">Правила приема в 2013г.</div>
+        </div>
+    </a>
+    
+    <a href="http://www.ulsu.ru/programms/" target="_blank">
+        <div class="big-block" id="download">
+            <div class="text-block">Основные образовательные программы, реализуемые в УлГУ</div>
+        </div>
+    </a>
+    
+
+   {% for b in blocks %}
+   {% if b.section.id == 1 %}
+    <a href="javascript://">
+        <div class="big-block" id="{{b.id}}">
+            <div class="text-block">{{ b.title|safe }}</div>
+        </div>
+    </a>
+   {% endif %}
+   {% endfor %}
+   
+
+  
+    <div style="clear: both;"></div>
+   </div> 
+  
+</div>   
+</div>
+</div>
+{% endblock %}

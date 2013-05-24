@@ -1,0 +1,1662 @@
+{% extends "index.html" %}
+{% load i18n %}{% load static %}
+{% get_static_prefix as STATIC_URL %}
+
+
+{% block head %}Анкета абитуриента{% endblock %}
+
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/jquery-ui.css">
+<style type="text/css">
+tr {
+    border: none !important;
+}
+
+.spec_range td{
+    vertical-align: middle;
+    text-align: center;
+}
+
+.spec_range input[type=radio]{
+    margin-left:10px;
+    margin-bottom:10px;
+}
+
+.ui-datepicker-trigger{
+    line-height:400px;
+}
+
+.error input[type=text]{
+    border: 1px solid red;
+}
+
+.message{
+    display: none;
+}
+
+.error .message{
+    display: inline !important;
+}
+
+.eduform_filter{
+    width: 407px;
+    height: 32px;
+    margin: 5px 0;
+}
+
+.eduform_filter span{
+    line-height: 32px;
+    margin: 0 3px;
+}
+
+.eduform_filter input[type=checkbox]{
+    vertical-align: middle;
+    margin-bottom: 4px;
+    margin-left:3px;
+}
+
+.eduform_filter.checked{
+    background-color: #52A365;
+    color: #fff;
+}
+
+.eduform_filter.checked.disabled{
+    background-color: #d1d1d1;
+    color: #fff;
+}
+
+.save_button{
+    line-height:30px;
+    padding: 5px;
+    float:left;
+    cursor: pointer;
+}
+
+
+#save_button_save_fixed{
+    top: 300px;
+    background-color: #52A365;
+}
+
+
+#save_button_approve_fixed{
+    top: 340px;
+    background-color: #7F8EDA;
+}
+
+.save_button.fixed {
+    margin: 0 !important;
+    padding-right: 20px;
+    color: #fff;
+    position: fixed;
+    right: 0;
+    width: 110px;
+}
+
+.save_button_image{
+    margin-right:5px;
+    float:left;
+    width:30px;
+    height:30px;
+}
+
+#save_button_save{
+    margin-right:20px;
+}
+
+#save_button_save .save_button_image{
+    background-image: url({{ STATIC_URL }}image/arrow.png);
+}
+
+#save_button_approve .save_button_image{
+    background-image: url({{ STATIC_URL }}image/arrow_send.png);
+}
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div id="main-form" style="margin-top: 40px;font-family: segoe ui; font-size: 14px;border: 1px black solid;padding: 3%;">
+
+
+<form action="/send/" id="glForm" name="glForm" method="post">
+<div id="sform">
+    <table id="start">
+        <tbody>
+            <tr>
+                <td>
+                    <p>
+                    <h5 style="font-size: 18px; margin:0;padding: 0; color: #52A365;font-weight: normal">Уважаемый абитуриент!</h5>
+                    <br />
+                    Вы находитесь на странице дистанционной подачи заявлений в Ульяновский государственный университет. Аккуратно заполнив предлагаемую анкету, Вы существенно сократите время своего пребывания в пункте приёма заявлений.</p>
+                    <p>
+                    <h5 style="font-size: 18px; margin:0;padding: 0; color: #52A365;font-weight: normal">ВНИМАНИЕ!</h5>
+                    <br />
+                        Для завершения процедуры подачи документов, Вам необходимо <strong>лично</strong> предоставить полный комплект документов, предусмотренных правилами приёма в УлГУ в пункт приёма документов по адресу:<br />
+                        <i><strong>г.Ульяновск, ул.Л.Толстого, 38</strong></i>, либо отправить необходимые документы почтой по адресу:<br> <i><strong>432017, г.Ульяновск, ул.Л.Толстого, д.42, Приёмная комиссия</strong></i>.</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+        <div class="form-big-block">
+            <h4 class="h-big">Персональная информация</h4>
+
+            <div class="form-block">
+                <div class="form fio-form">
+                    <label for="LastName">Фамилия:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.LastName %} value="{{v.LastName}}"{% endif %} id="LastName" name="LastName" />
+                </div>
+                <div class="form fio-form">
+                    <label for="FirstName">Имя:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.FirstName %} value="{{v.FirstName}}"{% endif %} id="FirstName" name="FirstName" />
+                </div>
+                <div class="form fio-form">
+                    <label for="MiddleName">Отчество:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.MiddleName %} value="{{v.MiddleName}}"{% endif %} id="MiddleName" name="MiddleName" />
+                </div>
+                <div class="form">
+                    <label for="BirthDay">Дата рождения
+                        <span class="help"><nobr>(ГГГГ-ММ-ДД)</nobr></span>:
+                    </label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.BirthDay %} value="{{v.BirthDay|date:"Y-m-d" }}"{% endif %} id="BirthDay" name="BirthDay" />
+                </div>
+            </div>
+
+            <div class="form-block">
+                <div class="form" style="margin-bottom: 40px;">
+                    <label for="IDSex">Пол:</label><br/>
+                    <div style="float: left; margin-right: 10px;">
+                        <input{% if edit %} disabled{% endif %} type="radio"{% if v.IDSex == 1 %} checked="checked"{% endif %} id="IDSexM" value="1" name="IDSex">Мужской
+                    </div>
+                    <div style="float: left; margin-right: 10px;">
+                        <input{% if edit %} disabled{% endif %} type="radio"{% if v.IDSex == 2 %} checked="checked"{% endif %} id="IDSexG" value="2" name="IDSex">Женский
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="form">
+                    <label for="IDSocialStatus">Социальный статус:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="IDSocialStatus" name="IDSocialStatus">
+                        <option value=""></option>
+                        {% for item in IDSocialStatus %}
+                        <option{% if v.IDSocialStatus.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form">
+                    <label for="Nationality">Национальность:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="Nationality" name="Nationality">
+                        <option value=""></option>
+                        {% for item in Nationality %}
+                        <option{% if v.Nationality.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form">
+                    <label for="Citizenship">Гражданство:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="Citizenship" name="Citizenship">
+                        <option value=""></option>
+                        {% for item in Country %}
+                        <option{% if v.Citizenship.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-big-block">
+            <h4 class="h-small">Паспортные данные</h4>
+
+            <div class="form-block">
+                <div class="form">
+                    <label for="PassportSer">Серия (<span class="help">4 цифры без пробелов</span>):</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.PassportSer %} value="{{v.PassportSer}}"{% endif %} id="PassportSer" name="PassportSer" />
+                    <span class="message">Неправильный формат поля 'Серия' ! Нужно 'XXXX', где X - цифра.</span>
+                </div>
+                <div class="form">
+                    <label for="PassportNumb">Номер:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.PassportNumb %} value="{{v.PassportNumb}}"{% endif %} id="PassportNumb" name="PassportNumb" />
+                    <span class="message">Неправильный формат поля 'Номер' ! Нужно 'XXXXXX', где X - цифра.</span>
+                </div>
+                <div class="form">
+                    <label for="CodUVD">Код подразделения УВД:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.CodUVD %} value="{{v.CodUVD}}"{% endif %} id="CodUVD" name="CodUVD" />
+                </div>
+                <div class="form">
+                    <label for="PassportDate">Дата выдачи паспорта (<span class="help"><nobr>ГГГГ-ММ-ДД</nobr></span>):</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.PassportDate %} value="{{v.PassportDate|date:"Y-m-d"}}"{% endif %} id="PassportDate" name="PassportDate" />
+                </div>
+                <div class="form">
+                    <label for="BirthPlace">Место рождения (<span class="help">по паспорту</span>):</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text" size="80"{% if v.BirthPlace %} value="{{v.BirthPlace}}"{% endif %} id="BirthPlace" name="BirthPlace" />
+                </div>
+                <div class="form">
+                    <label for="PassportIssued">Кем выдан паспорт:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text" size="80"{% if v.PassportIssued %} value="{{v.PassportIssued}}"{% endif %} id="PassportIssued" name="PassportIssued" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-big-block">
+            <h4 class="h-small">Прописка</h4>
+
+            <div class="form-block">
+                <div class="form">
+                    <label for="Country">Страна:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="Country" name="Country">
+                        <option value=""></option>
+                         {% for item in Country %}
+                        <option{% if v.PrCountry.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form">
+                    <label for="Region">Регион:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %}{% if not v.PrCountry.id or v.PrCountry.id != 10 %} disabled{% endif %} id="Region" name="Region">
+                        <option value=""></option>
+                        {% for item in Region %}
+                        <option{% if v.PrRegion.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form">
+                    <label for="RegionArea">Район:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %}{% if not v.PrRegion.id %} disabled{% endif %} id="RegionArea" name="RegionArea">
+                        <option value="0">Нет района</option>
+                        {% for item in RegionArea %}{% if item.region == v.PrRegion %}
+                        <option{% if v.PrRegionArea.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endif %}{% endfor %}
+                    </select>
+                </div>
+
+                <div class="form">
+                    <label for="Locality">Населённый пункт:</label><br/>
+                    <input{% if edit or not v.PrRegion %} disabled{% endif %} size="30"{% if v.PrLocality %} value="{{v.PrLocality.name}}" {% endif %} type="text" id="LocalityName" name="LocalityName" />
+                    <input{% if edit or not v.PrRegion %} disabled{% endif %} type="hidden"{% if v.PrLocality %} value="{{v.PrLocality.id}}" {% endif %} id="Locality" name="Locality" />
+                </div>
+
+                <div class="form">
+                    <label for="Street">Улица:</label><br/>
+                    <input{% if edit %} disabled{% endif %}{% if not v.PrRegion or not v.PrLocality %} disabled{% endif %}{% if v.PrStreet %} value="{{v.PrStreet.name}}" {% endif %} type="text" id="StreetName" name="StreetName" />
+                    <input{% if edit %} disabled{% endif %} type="hidden"{% if v.PrStreet %} value="{{v.PrStreet.id}}" {% endif %} id="Street" name="Street" />
+                </div>
+
+                <div class="form">
+                    <label for="House">Дом:</label><br/>
+                    <input{% if edit %} disabled{% endif %}{% if not v.PrRegion or not v.PrLocality %} disabled{% endif %} type="text"{% if v.PrHouse %} value="{{v.PrHouse}}"{% endif %} id="House" name="House" />
+                </div>
+
+                <div class="form">
+                    <label for="Apartment">Квартира:</label><br/>
+                    <input{% if edit %} disabled{% endif %}{% if not v.PrRegion or not v.PrLocality %} disabled{% endif %} type="text"{% if v.PrApartment %} value="{{v.PrApartment}}" {% endif %} id="Apartment" name="Apartment" />
+                </div>
+
+                <div class="form">
+                    <label for="Index">Индекс:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.PrIndex %} value="{{v.PrIndex}}" {% endif %} id="Index" name="Index" /><br/>
+                    <a href="http://temp8.ulsu.ru/" target="_blank" class="link">Узнать свой почтовый индекс</a>
+                </div>
+            </div>
+
+            <div class="form-block">
+                <div class="form">
+                    <label for="Telephone">Контактный телефон:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.Telephone %} value="{{v.Telephone}}" {% endif %} id="Telephone" name="Telephone" />
+                </div>
+                <div class="form">
+                    <label for="Email">E-mail:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.Email %} value="{{v.Email}}" {% endif %} id="Email" name="Email" />
+                </div>
+                <div class="form">
+                    <label for="IDMilitaryService">Отношение к воинской службе:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="IDMilitaryService" name="IDMilitaryService">
+                        <option value=""></option>
+                        {% for item in MilitaryStatus %}
+                        <option{% if v.IDMilitaryService.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form_check">
+            <input{% if edit %} disabled{% endif %} type="checkbox"{% if v.prp %} checked=""{% endif %} id="prp" name="prp" style="width: 13px; height: 13px;"/>
+            <label for="prp">Фактический адрес и прописка совпадают</label>
+        </div>
+
+        <div class="form-big-block" id="prp-block"{% if v.prp %} style="display:none;"{% endif %}>
+
+            <h4 class="h-small">Адрес фактического проживания (только для проживающих в Ульяновске или приехавших из других регионов на период сдачи экзаменов)</h4>
+
+            <div class="form-block">
+                <div class="form">
+                    <label for="LiveLocality">Населённый пункт:</label><br/>
+                    <input disabled size="30" value="Ульяновск" type="text" id="LiveLocalityName" name="LiveLocalityName" />
+                    <input disabled type="hidden" value="196196" id="LiveLocality" name="LiveLocality" />
+                </div>
+
+                <div class="form">
+                    <label for="LiveStreet">Улица:</label><br/>
+                    <input{% if edit %} disabled{% endif %}{% if not v.LiveRegion or not v.LiveLocality %} disabled{% endif %}{% if v.LiveStreet %} value="{{v.LiveStreet.name}}" {% endif %} type="text" id="LiveStreetName" name="LiveStreetName" />
+                    <input{% if edit %} disabled{% endif %} type="hidden"{% if v.LiveStreet %} value="{{v.LiveStreet.id}}" {% endif %} id="LiveStreet" name="LiveStreet" />
+                </div>
+
+                <div class="form">
+                    <label for="LiveHouse">Дом:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.LiveHouse and v.LiveRegion and v.LiveLocality %} value="{{v.LiveHouse}}" {% endif %} id="LiveHouse" name="LiveHouse" />
+                </div>
+
+                <div class="form">
+                    <label for="LiveApartment">Квартира:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.LiveApartment and v.LiveHouse and v.LiveRegion and v.LiveLocality %} value="{{v.LiveApartment}}" {% endif %} id="LiveApartment" name="LiveApartment" />
+                </div>
+
+                <div class="form">
+                    <label for="LiveIndex">Индекс:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.LiveIndex %} value="{{v.LiveIndex}}" {% endif %} id="LiveIndex" name="LiveIndex" /><br/>
+                    <a class="link" href="http://temp8.ulsu.ru/" target="_blank">Узнать свой почтовый индекс</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-big-block">
+
+            <h4 class="h-small">Прочая информация</h4>
+
+            <div class="form-block">
+                <div class="form-check">
+                    <input{% if edit %} disabled{% endif %} type="checkbox"{% if v.Hostel %} checked=""{% endif %} id="Hostel" name="Hostel" />
+                    <label for="Hostel">Необходимость в общежитии на период обучения (для поступающих на бюджетную форму обучения)</label>
+                </div>
+
+                <div class="form">
+                    <label for="ForeignLanguage">Иностранный язык, который изучал в школе, либо который собирается сдавать при поступлении (свидетельство ЕГЭ):</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="ForeignLanguage" name="ForeignLanguage">
+                        <option value=""></option>
+                         {% for item in Language %}
+                        <option{% if v.ForeignLanguage.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="form">
+                    <label for="LengthServiceTotal">Общий трудовой стаж (<span class="help">в месяцах</span>):</label><br/>
+                    <input{% if edit %} disabled{% endif %} maxlength="3" type="text"{% if v.LengthServiceTotal %} value="{{v.LengthServiceTotal}}"{% endif %} id="LengthServiceTotal" name="LengthServiceTotal" />
+                </div>
+
+                <div class="form">
+                    <label for="PrivIDPrivileges">Наличие льгот:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="PrivIDPrivileges" name="PrivIDPrivileges">
+                        <option value=""></option>
+                         {% for item in Privilege %}
+                        <option{% if v.PrivIDPrivileges.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-big-block">
+            <h4 class="h-big">Образование</h4>
+            <div id="edu-list"{% if v.schoolSel %} style="display:none;"{% endif %} class="form-block">
+                <div class="form">
+                    <label for="schoolRjn">Регион:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="schoolRjn" name="schoolRjn">
+                        <option value=""></option>
+                         {% for item in EduRegion %}
+                        <option{% if v.schoolRjn.id == item.id and not v.schoolSel %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div {% if not v.schoolRjn or v.schoolSel %} style="display:none;"{% endif %} class="form">
+                    <label for="schoolCity">Населенный пункт:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="schoolCity" name="schoolCity">
+                        <option value=""></option>
+                        {% if EduLocality and v.schoolRjn and not v.schoolSel %}
+                         {% for item in EduLocality %}
+                        <option{% if v.schoolCity.id == item.id and not v.schoolSel %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div {% if not v.schoolCity or v.schoolSel %} style="display:none;"{% endif %} class="form">
+                    <label for="schoolName">Учебное заведение:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="schoolName" name="schoolName">
+                        <option value=""></option>
+                        {% if EduInstitute and v.schoolRjn and v.schoolCity and not v.schoolSel %}
+                         {% for item in EduInstitute %}
+                        <option{% if v.schoolName.id == item.id and not v.schoolSel %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form_check">
+                <input{% if edit %} disabled{% endif %} type="checkbox"{% if v.schoolSel %} checked=""{% endif %} id="schoolSel" name="schoolSel" style="width:13px; height:13px;"/>
+                <label for="schoolSel">Моего учебного заведения нет в приведённом списке</label><br/><br/>
+            </div>
+
+            <div id="edu-non-list"{% if not v.schoolSel %} style="display:none;"{% endif %} class="form-block">
+                <div class="form">
+                    <label for="EduCountry">Страна:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="EduCountry" name="EduCountry">
+                        <option value=""></option>
+                         {% for item in Country %}
+                        <option{% if v.EduCountry.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form">
+                    <label for="EduRegion">Регион:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %}{% if not v.EduCountry %} disabled{% endif %} id="EduRegion" name="EduRegion">
+                        <option value=""></option>
+                        {% for item in Region %}
+                        <option{% if v.EduRegion.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form">
+                    <label for="EduRegionArea">Район:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %}{% if not v.EduRegion %} disabled{% endif %} id="EduRegionArea" name="EduRegionArea">
+                        <option value="0">Нет района</option>
+                        {% for item in RegionArea %}{% if item.region == v.EduRegion %}
+                            <option{% if v.EduRegionArea.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endif %}{% endfor %}
+                    </select>
+                </div>
+
+                <div class="form">
+                    <label for="EduLocality">Населённый пункт:</label><br/>
+                    <input{% if edit %} disabled{% endif %}{% if v.EduRegionArea != None %} disabled{% endif %} size="30"{% if v.EduLocality %} value="{{v.EduLocality.name}}"{% endif %} type="text" id="EduLocalityName" name="EduLocalityName" />
+                    <input{% if edit %} disabled{% endif %} type="hidden"{% if v.EduLocality %} value="{{v.EduLocality.id}}"{% endif %} id="EduLocality" name="EduLocality" />
+                </div>
+
+                <div class="form">
+                    <label for="EduInstituteType">Тип учебного заведения:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="EduInstituteType" name="EduInstituteType">
+                        <option value=""></option>
+                        {% for item in InstituteType %}
+                        <option{% if v.EduInstituteType.id == item.id and v.schoolSel %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form">
+                    <label for="EduInstituteName">Название учебного заведения:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.EduInstituteName %} value="{{v.EduInstituteName}}"{% endif %} id="EduInstituteName" name="EduInstituteName" />
+                </div>
+
+                <div class="form">
+                    <label for="EduInstituteDescription">Описание учебного заведения:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.EduInstituteDescription %} value="{{v.EduInstituteDescription}}"{% endif %} id="EduInstituteDescription" name="EduInstituteDescription" />
+                </div>
+            </div>
+
+            <div class="form-block">
+                <div class="form">
+                    <label for="EduDiplomType">Документ об образовании:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="EduDiplomType" name="EduDiplomType">
+                        <option value=""></option>
+                        {% for item in DiplomType %}
+                        <option{% if v.EduDiplomType.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form">
+                    <label for="EduEducationType">Вид образования:</label><br/><br/>
+                    <select{% if edit %} disabled{% endif %} id="EduEducationType" name="EduEducationType">
+                        <option value=""></option>
+                        {% for item in EducationType %}
+                        <option{% if v.EduEducationType.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form">
+                    <label for="EduDateIN">Дата поступления (<span class="help">ГГГГ-ММ-ДД</span>):</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.EduDateIN %} value="{{v.EduDateIN|date:"Y-m-d" }}"{% endif %} id="EduDateIN" name="EduDateIN" />
+                </div>
+
+                <div class="form">
+                    <label for="EduDateOUT">Дата окончания (<span class="help">ГГГГ-ММ-ДД</span>):</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.EduDateOUT %} value="{{v.EduDateOUT|date:"Y-m-d" }}"{% endif %} id="EduDateOUT" name="EduDateOUT" />
+                </div>
+
+                <div class="form">
+                    <label for="EduDiplomspeciality">Специальность (<span class="help">по документу об образовании</span>):</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.EduDiplomspeciality %} value="{{v.EduDiplomspeciality }}"{% endif %} id="EduDiplomspeciality" name="EduDiplomspeciality" />
+                </div>
+
+                <h4 class="h-small">Документ об образовании</h4>
+                <div class="form">
+                    <label for="EduSeriaDiplom">Серия:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text" size="8"{% if v.EduSeriaDiplom %} value="{{v.EduSeriaDiplom }}"{% endif %} id="EduSeriaDiplom" name="EduSeriaDiplom" />
+                </div>
+
+                <div class="form">
+                    <label for="EduNumberDiplom">Номер:</label><br/>
+                    <input{% if edit %} disabled{% endif %} type="text"{% if v.EduNumberDiplom %} value="{{v.EduNumberDiplom }}"{% endif %} id="EduNumberDiplom" name="EduNumberDiplom" />
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-big-block">
+            <h4 class="h-big">Данные о результатах ЕГЭ</h4>
+            <div id="repeater-exam">
+                <div id="repeater-exam-items">
+                </div>
+                {% if not edit %}<div id="repeater-exam-item-adder">Добавить результат ЕГЭ</div>{% endif %}
+            </div>
+        </div>
+
+        <div class="form-big-block">
+            <h4 class="h-small">Данные о специальностях, на которые поступает абитуриент</h4>
+            <div id="repeater-spec" style="margin-top: 5px;">
+                <div id="repeater-spec-items"></div>
+                <div id="repeater-spec-item-adder">Добавить специальность</div>
+            </div>
+        </div>
+
+        <div class="form-big-block">
+            <h4 class="h-small">Информация о довузовском образовании, полученном при УлГУ</h4>
+            <div class="form">
+                <label for="UlsuIDStructure">Вид довузовского образования:</label><br/><br/>
+                <select{% if edit %} disabled{% endif %} id="UlsuIDStructure" name="UlsuIDStructure">
+                    <option value=""></option>
+                    {% for item in Cource %}
+                    <option{% if v.UlsuIDStructure.id == item.id %} selected{% endif %} value="{{item.id}}">{{item.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form">
+                <label for="UlsuDateIn">Дата начала (<span class="help">ГГГГ-ММ-ДД</span>):</label><br/>
+                <input{% if edit %} disabled{% endif %} type="text"{% if v.UlsuDateIn %} value="{{v.UlsuDateIn|date:"Y-m-d" }}"{% endif %} id="UlsuDateIn" name="UlsuDateIn" />
+            </div>
+            <div class="form">
+                <label for="UlsuDateOut">Дата окончания (<span class="help">ГГГГ-ММ-ДД</span>):</label><br/>
+                <input{% if edit %} disabled{% endif %} type="text"{% if v.UlsuDateOut %} value="{{v.UlsuDateOut|date:"Y-m-d" }}"{% endif %} id="UlsuDateOut" name="UlsuDateOut" />
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        {% if publisher %}<div class="form-big-block">
+            <div class="form_check">
+                <input type="checkbox"{% if v.Original %} checked=""{% endif %} id="Original" name="Original" style="width: 13px; height: 13px;"/>
+                <label for="Original">Предоставлен оригинал документа об образовании</label>
+            </div>
+        </div>{% endif %}
+
+        <div class="form-big-block">
+            {% csrf_token %}
+            {% if publisher and not add %}
+                <input type="hidden" id="user_id" name="user_id" value="{{v.user.id}}" />
+                <input type="hidden" id="approve" name="approve" value="{% if v.approved %}1{% else %}0{% endif %}" />
+            {% endif %}
+            {% if not edit %}
+                <div class="save_button" id="save_button_save">
+                    <div class="save_button_image">
+                    </div>Сохранить
+                </div>
+                <div class="save_button fixed" id="save_button_save_fixed">
+                    <div class="save_button_image">
+                    </div>Сохранить
+                </div>
+            {% endif %}
+            {% if publisher %}
+                <div class="save_button" id="save_button_approve">
+                    <div class="save_button_image">
+                    </div>Отправить
+                </div>
+                {% if edit %}
+                    <div class="save_button fixed" id="save_button_approve_fixed">
+                        <div class="save_button_image">
+                        </div>Отправить
+                    </div>
+                {% endif %}
+            {% endif %}
+            <div class="clear"></div>
+        </div>
+</div>
+
+</form>
+</div>
+
+
+{% endblock %}
+
+
+
+{% block js %}
+<script src="{{STATIC_URL}}js/jquery.ui.datepicker-ru.js"></script>
+<script src="{{STATIC_URL}}js/jquery.json2html-3.1-min.js"></script>
+<script src="{{STATIC_URL}}js/jquery.selectbox.js"></script>
+<script src="{{STATIC_URL}}js/form/address.js"></script>
+<script>
+
+function create_array(n, def){
+    var a = [];
+    for (var i=0; i<n; i++){
+        a[i]=def;
+    }
+    console.log(a);
+    return a;
+}
+
+    var global = {
+        specialities: [{% for spec in SpecialityName %}
+            {'id':'{{spec.id}}', 'name':"{{spec.name}}"}{% if forloop.revcounter0 %},{% endif %}{% endfor %}
+        ],
+
+        faculties: [{% for fac in Faculty %}
+            {'id':{{fac.id}}, 'name':"{{fac.name}}"}{% if forloop.revcounter0 %},{% endif %}{% endfor %}
+        ],
+
+        edu_forms: [{% for ef in EduForm %}
+            {'id':{{ef.id}}, 'name':"{{ef.name}}"}{% if forloop.revcounter0 %},{% endif %}{% endfor %}
+        ],
+
+        region_areas: [{% for ra in RegionArea %}
+            {'id':{{ra.id}}, 'name':"{{ra.name}}"}{% if forloop.revcounter0 %},{% endif %}{% endfor %}
+        ],
+
+        spec_ranges: create_array(3,0),
+        radio_count: 0,
+        'zel': [16, 17, 19],
+        'exam_count': 5,
+        'specs_count': 3
+    };
+
+
+    function max_available_range(a){
+        m = Math.max.apply(Math, a);
+        r = m+1;
+        for (var i=1; i<=m; i++){
+            if (a.indexOf(i)<0){
+                r = i;
+                break;
+            }
+        }
+        return r;
+    }
+
+
+    Array.prototype.in_array = function (needle) {
+        for (var i = 0; i < this.length; i++) if (this[ i] === needle) return true;
+        return false;
+    };
+
+
+
+
+    function intersecting(one, two){
+        var intersection = [];
+        for (var i=0;i<two.length;i++){
+            for (var j=0; j<one.length; j++){
+                if (two[i]==one[j]){
+                    intersection.push(one[j]);
+                }
+            }
+        }
+        return intersection;
+    }
+
+    function get_specs(id){
+        var specs = [{id:'', name:''}];
+        var tmp;
+        for(var i=1; i<global.specialities.length; i++){
+            try {
+                tmp = {'id': global.specialities[i]['id'], 'name': global.specialities[i]['name']};
+            } catch (e) {
+                alert(e);
+                alert(i);
+                alert(global.specialities[i]);
+            }
+
+            if (tmp.id == id){
+                tmp.selected = true;
+            }
+            specs.push(tmp);
+        }
+        return specs;
+    }
+
+
+    function get_facs(active, selected){
+        var facs = [{id:'', name:''}];
+        var tmp;
+        for(var i=0; i<global.faculties.length; i++){
+            tmp = {id: global.faculties[i].id, name: global.faculties[i].name};
+            if (tmp.id == selected){
+                tmp.selected = true;
+            }
+            if (jQuery.inArray(tmp.id, active) != -1) facs.push(tmp);
+        }
+        return facs;
+    }
+
+    function get_edu_forms(active, checked, edit){
+        var eforms = [];
+        var tmp;
+        var j;
+        for(var i=0; i<global.edu_forms.length; i++){
+            tmp = {id: global.edu_forms[i].id, name: global.edu_forms[i].name};
+            for (j in checked){
+                if (tmp.id == checked[j]){
+                    tmp.checked = true;
+                    break;
+                }
+            }
+            for (j in active){
+                if (tmp.id == active[j]){
+                    tmp.disabled = edit;
+                    eforms.push(tmp);
+                    break;
+                }
+            }
+        }
+        return eforms;
+    }
+
+
+
+    selected_region = '0';
+
+    $(function() {
+        $('select').trigger('refresh');
+
+        var today = new Date();
+        $("#EduDateOUT").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true
+        });
+
+        var birth_year_default = today.getFullYear() - 17;
+        $("#BirthDay").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            maxDate: 0,
+            defaultDate: birth_year_default + "-01-01"
+        });
+
+        var pass_year_default = today.getFullYear() - 3;
+        $("#PassportDate").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            maxDate: 0,
+            defaultDate: pass_year_default + "-01-01"
+        });
+
+        $("#UlsuDateIn, #EduDateIN").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            maxDate: 0
+        });
+
+        $("#UlsuDateOut").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            maxDate: new Date(2013, 7, 31)
+        });
+
+        var repeaterExamItem = [{
+                tag: 'div',
+                'class': 'repeater-item',
+                children:[{
+
+                        tag: 'div',
+                        'class': 'form',
+                        children: [{
+                                tag: 'label',
+                                'for': 'EgNumber',
+                                html: 'Номер свидетельства ЕГЭ:'
+                        },
+                        {tag: 'br'},
+                        {
+                                tag: 'input',
+                                type: 'text',
+                                'class': 'EgNumber',
+                                name: 'EgNumber[]',
+                                value: '${number}',
+                                'disabled': function(){return this.edit}
+                        }]
+                },{
+                        tag: 'div',
+                        'class': 'form',
+                        children: [{
+                                tag: 'label',
+                                'for': 'EgExamName',
+                                html: 'Название экзамена ЕГЭ:'
+                        },
+                        {tag: 'br'},
+                        {tag: 'br'},
+                        {
+                                tag: 'select',
+                                'class': 'EgExamName',
+                                name: 'EgExamName[]',
+                                'disabled': function(){return this.edit},
+                                children: [{
+                                        tag: 'option',
+                                        value: ''
+                                }
+                                {% for item in ExamName %}
+                                ,{
+                                        tag: 'option',
+                                        value: '{{item.id}}',
+                                        html: '{{item.name}}',
+                                        selected:function(){return (this.name=={{item.id}});}
+                                }
+                                {% endfor %}
+                                ]
+                        }]
+                },
+                {
+                        tag: 'div',
+                        'class': 'form',
+                        children: [{
+                                tag: 'label',
+                                'for': 'EgMark',
+                                html: 'Количество баллов:'
+                        },
+                        {tag: 'br'},
+                        {
+                                tag: 'input',
+                                type: 'text',
+                                'class': 'EgMark',
+                                name: 'EgMark[]',
+                                value: '${mark}',
+                                'disabled': function(){return this.edit}
+                        }]
+                },{
+                        tag: 'h4',
+                        html: 'Паспорт, с которым сдавал этот ЕГЭ'
+                },{
+                        tag: 'div',
+                        'class': 'form form',
+                        children: [{
+                                tag: 'label',
+                                'for': 'EgDocSer',
+                                html: 'Серия (<span class="help">без пробелов</span>):'
+                        },
+                        {tag: 'br'},
+                        {
+                                tag: 'input',
+                                size: '8',
+                                type: 'text',
+                                'class': 'EgDocSer',
+                                name: 'EgDocSer[]',
+                                value: '${docser}',
+                                'disabled': function(){return this.edit}
+                        }]
+                },{
+                        tag: 'div',
+                        'class': 'form form',
+                        children: [{
+                                tag: 'label',
+                                'for': 'EgDocNum',
+                                html: 'Номер (<span class="help">без пробелов</span>):'
+                        },
+                        {tag: 'br'},
+                        {
+                                tag: 'input',
+                                type: 'text',
+                                'class': 'EgDocNum',
+                                name: 'EgDocNum[]',
+                                value: '${docnum}',
+                                'disabled': function(){return this.edit}
+                        }]
+                },
+                {tag: 'div', 'class': 'clear'},
+                {tag: 'div',
+                    'class': function(){return (this.edit)?'display_none':'del-repeater-exam-item';},
+                    style: 'margin: -30px 10px 0 0',
+                    html: function(){return (this.edit)?'':'<div id="button_del"><div class="krest"></div></div>';}
+                }]
+            }];
+
+
+        var repeaterSpecItem = {
+            item:[{
+                tag: 'div',
+                'class': 'repeater-item',
+                children:[{
+                    tag: 'input',
+                    'type': 'hidden',
+                    'name': 'SpecItem[]',
+                    'value': '1',
+                    'disabled': function(){return this.edit}
+
+                },{
+                    tag: 'div',
+                    'class': 'form',
+                    children: [{
+                        tag: 'label',
+                        'for': 'Speciality',
+                        html: 'Специальность:'
+                    },{tag: 'br'},{tag: 'br'},{
+                        tag: 'select',
+                        'class': 'Speciality',
+                        name: 'Speciality[]',
+                        children: function(){return($.json2html(this.specs,repeaterSpecItem.option));},
+                        'disabled': function(){return this.edit}
+                    }]
+
+                },{
+                    tag: 'div',
+                    'class': 'form',
+                    style: function(){if (!this.show_facs) return "display:none;"; else return false;},
+                    children: [{
+                        tag: 'label',
+                        'for': 'Faculty',
+                        html: 'Факультет:'
+                    },{tag: 'br'},{tag: 'br'},{
+                        tag: 'select',
+                        'class': 'Faculty',
+                        name: 'Faculty[]',
+                        children: function(){return($.json2html(this.facs,repeaterSpecItem.option));},
+                        'disabled': function(){return this.edit}
+                    }]
+                },{
+                    tag: 'div',
+                    'class': 'form',
+                    style:function(){if (!this.show_edu_forms) return "display:none;"; else return '';},
+                    children: [{
+                        tag: 'label',
+                        'for': 'Faculty',
+                        html: 'Форма обучения:'
+                    },{tag: 'br'},{
+                        tag: 'div',
+                        'class': 'filter_body',
+                        children: function(){return($.json2html(this.edu_forms,repeaterSpecItem.filter));}
+                    },{
+                        tag: 'input',
+                        type: 'hidden',
+                        name: 'EduForm[]',
+                        value: '${hidden_value}',
+                        'disabled': function(){return this.edit}
+                    },{
+                        tag: 'div',
+                        'class': 'message',
+                        'style': function(){return (intersecting(this.hidden_value.split(','),global.zel).length > 0)?'display:block;':'';},
+                        'html': function(){var l=false; if (intersecting(this.hidden_value.split(','),global.zel).length > 0) {return 'Для поступления на целевой набор, вы должны предоставить договор с предприятием';} else {return '';} }
+                    }]
+                },{
+                        tag: 'div',
+                        'class': 'form',
+                        children: [{
+                                tag: 'table',
+                                'class': 'spec_range',
+                                cellpadding: '5',
+                                children: [{
+                                    tag: 'tr',
+                                    children: [{
+                                        tag: 'td'
+                                    },{
+                                        tag: 'td',
+                                        html: '1'
+                                    },{
+                                        tag: 'td',
+                                        html: '2'
+                                    },{
+                                        tag: 'td',
+                                        html: '3'
+                                    }]
+                                },{
+                                    tag: 'tr',
+                                    children: [{
+                                        tag: 'td',
+                                        children:[{
+                                            tag: 'label',
+                                            html: 'Приоритет зачисления:'
+                                        }]
+                                    },{
+                                        tag: 'td',
+                                        children:[{
+                                            tag: 'input',
+                                            type: 'radio',
+                                            'class': 'SpecRangeRadio',
+                                            name: 'SpecRange_${radio}',
+                                            value:'1',
+                                            checked: function(){return (this.radio_v == '1');  },
+                                            'disabled': function(){return this.edit}
+                                        }]
+                                    },{
+                                        tag: 'td',
+                                        children:[{
+                                            tag: 'input',
+                                            type: 'radio',
+                                            'class': 'SpecRangeRadio',
+                                            name: 'SpecRange_${radio}',
+                                            value:'2',
+                                            checked: function(){return (this.radio_v == '2');  },
+                                            'disabled': function(){return this.edit}
+                                        }]
+                                    },{
+                                        tag: 'td',
+                                        children:[{
+                                            tag: 'input',
+                                            type: 'radio',
+                                            'class': 'SpecRangeRadio',
+                                            name: 'SpecRange_${radio}',
+                                            value:'3',
+                                            checked: function(){return (this.radio_v == '3');  },
+                                            'disabled': function(){return this.edit}
+                                        }]
+                                    }]
+                                }]
+                        },{
+                                tag: 'input',
+                                type: 'hidden',
+                                'class': 'SpecRange',
+                                name: 'SpecRange[]',
+                                value: '${radio_v}',
+                                'disabled': function(){return this.edit}
+                        }]
+                },{
+
+                        tag: 'div',
+                        'class': 'form',
+                        children: [{
+                                tag: 'label',
+                                'for': 'SpecStream',
+                                html: 'Поток:'
+                        },
+                        {tag: 'br'},
+                        {tag: 'br'},
+                        {
+                                tag: 'select',
+                                'class': 'SpecStream',
+                                name: 'SpecStream[]',
+                                children: [
+                                {tag: 'option', value: ''},
+                                {tag: 'option', value: '1', html: 'Первый поток', selected: function(){return (this.stream == '1')}},
+                                ],
+                                'disabled': function(){return this.edit}
+                        }]
+                },{
+                    tag: 'div',
+                    'class': 'form',
+                    children: [{
+                        tag: 'label',
+                        'for': 'SpecLengthServiceSpecial',
+                        html: 'Стаж работы <nobr>по специальности (<span class="help">в месяцах</span>):'
+                    },{tag: 'br'},{
+                        tag: 'input',
+                        size: '8',
+                        type: 'text',
+                        'class': 'SpecLengthServiceSpecial',
+                        name: 'SpecLengthServiceSpecial[]',
+                        value: '${service}',
+                        'disabled': function(){return this.edit}
+                    }]
+                },{tag: 'div', 'class': 'clear'},{
+                    tag: 'div',
+                    'class': function(){return (this.edit)?'display_none':'del-repeater-spec-item';},
+                    style: 'margin: -30px 10px 0 0',
+                    html: function(){return (this.edit)?'':'<div id="button_del"><div class="krest"></div></div>';}
+                }]
+        }],
+            option:[{tag:'option', value:'${id}', html:'${name}', selected:function(){return this.selected;}}],
+            filter:[{
+                tag: 'div',
+                'class': function(){return 'eduform_filter' + ((this.checked)?' checked':'') + ((this.disabled)?' disabled':''); },
+                children : [{
+                    tag: 'input',
+                    type: 'checkbox',
+                    name: 'filter_${id}',
+                    checked: function(){return !!this.checked;},
+                    'class': 'edu_form_checkbox',
+                    'disabled': function(){return this.disabled;}
+                },{
+                    tag: 'span',
+                    html: '${name}'
+                }]
+            }]
+        };
+
+
+               {% for item in e %}
+                $('#repeater-exam-items').json2html({
+                    number :'{{item.Number|default:''}}',
+                    mark   :'{{item.Mark|default:''}}',
+                    name   :'{{item.ExamName.id|default:''}}',
+                    docser :'{{item.DocSer|default:''}}',
+                    docnum :'{{item.DocNum|default:''}}',
+                    edit: {% if edit %}true{% else %}false{% endif %}
+                },repeaterExamItem);
+                repeaterExamItemsCount = {{e|length}};
+            {% empty %}{% if not edit %}
+                   $('#repeater-exam-items').json2html({},repeaterExamItem);
+                   repeaterExamItemsCount = 1;
+            {% endif %}{% endfor %}
+
+        $('#repeater-exam-item-adder').on('click',function(){
+            if(repeaterExamItemsCount == global.exam_count) return false;
+            $('#repeater-exam-items').json2html({},repeaterExamItem);
+            repeaterExamItemsCount++;
+            if(repeaterExamItemsCount == global.exam_count) $(this).css('display','none');
+            $('select').selectbox();
+        });
+
+        $('#repeater-exam').on('click', '.del-repeater-exam-item', function(){
+            $(this).parent().remove();
+            if(repeaterExamItemsCount == global.exam_count){
+                $('#repeater-exam-item-adder').css('display','');
+            }
+            repeaterExamItemsCount--;
+        });
+
+    {% for item in f %}
+        specData = {
+            specs: get_specs('{{ item.speciality.id }}'),
+            facs: get_facs([{% for fac in item.facs %}{{ fac }},{% endfor %}],'{{ item.faculty.id }}'),
+            edu_forms: get_edu_forms([{% for ef in item.edu_forms %}{{ ef }}{% if forloop.revcounter0 %},{% endif %}{% endfor %}],[{% for ef in item.active_edu_forms %}{{ ef }},{% endfor %}],{% if edit %}true{% else %}false{% endif %}),
+
+            show_facs: {% if item.speciality %}true{% else %}false{% endif %},
+            show_edu_forms: {% if item.faculty %}true{% else %}false{% endif %},
+            hidden_value: '{% for ef in item.active_edu_forms %}{{ ef }}{% if forloop.revcounter0 %},{% endif %}{% endfor %}',
+
+            edit: {% if edit %}true{% else %}false{% endif %},
+
+            radio: '{{ forloop.counter }}',
+            radio_v: {% if item.Priority %}'{{ item.Priority }}'{% else %}''{% endif %},
+            stream: '{{ item.Stream }}',
+            service: {% if item.Service %}'{{ item.Service }}'{% else %}''{% endif %}
+        };
+
+        {% if item.Priority %}global.spec_ranges[{{forloop.counter0}}]={{item.Priority}};{% endif %}
+        $('#repeater-spec-items').json2html(specData,repeaterSpecItem.item);
+        repeaterSpecItemsCount = {{f|length}};
+        if (repeaterSpecItemsCount == global.specs_count) $("#repeater-spec-item-adder").css('display','none');
+        global.radio_count = {{forloop.counter}};
+    {% empty %}
+        $('#repeater-spec-items').json2html({
+            specs: get_specs(0),
+            eduforms:[{id:'',name:''}],
+            facs:[{id:'',name:''}],
+            radio:'1',
+            radio_v:max_available_range(global.spec_ranges),
+            hidden_value: ''
+        },repeaterSpecItem.item);
+
+        repeaterSpecItemsCount = 1;
+        global.radio_count = 1;
+        global.spec_ranges[0] = 1;
+    {% endfor %}
+
+
+        $('#repeater-spec-item-adder').on('click',function(){
+            if(repeaterSpecItemsCount == global.specs_count) return false;
+            repeaterSpecItemsCount++;
+            global.radio_count++;
+            var m = max_available_range(global.spec_ranges);
+            global.spec_ranges[$('#repeater-spec-items').children().length] = m;
+            $('#repeater-spec-items').json2html({ specs:get_specs(0), radio_v:m, radio:global.radio_count, hidden_value: '' },repeaterSpecItem.item);
+            if(repeaterSpecItemsCount == global.specs_count) $(this).css('display','none');
+            $('select').selectbox();
+        });
+
+
+
+
+        $('#repeater-spec').on('click', '.del-repeater-spec-item', function(){
+            global.spec_ranges.splice($(this).parent().index(), 1);
+            global.spec_ranges.push(0);
+            $(this).parent().remove();
+            if(repeaterSpecItemsCount == global.specs_count) $('#repeater-spec-item-adder').css('display','');
+            repeaterSpecItemsCount--;
+        });
+
+        $('#schoolSel').on('change',function(){
+
+            if(this.checked){
+                $('#edu-list').css('display','none');
+                $('#edu-non-list').css('display','');
+            } else {
+                $('#edu-list').css('display','');
+                $('#edu-non-list').css('display','none');
+            }
+
+
+        });
+
+        $('#schoolRjn').on('change',function(){
+            $('#schoolCity').parent().css('display','none').val('');
+            $('#schoolName').parent().css('display','none').val('');
+            if(this.value == ''){
+
+            } else {
+                value = this.value;
+                $.ajax({
+                    type: "GET",
+                    url: "/data/?task=loadedulocalities&regionid="+value,
+                    dataType: "json"
+                }).done(function( msg ) {
+                    $('#schoolCity').children().remove();
+                    var optionItem = {
+                        tag:     'option',
+                        value:     '',
+                        html:     ''
+                    };
+                    $('#schoolCity').json2html({},optionItem);
+                    for(obj in msg){
+                        optionItem.value = ''+msg[obj].id;
+                        optionItem.html  = msg[obj].name;
+                        $('#schoolCity').json2html({},optionItem);
+                    }
+
+                    $('#schoolCity').parent().css('display','');
+                    $('#schoolCity').trigger('refresh');
+
+                });
+            }
+        });
+
+        $('#schoolCity').on('change', function(){
+            if(this.value == ''){
+                $('#schoolName').parent().css('display','none').val('');
+            } else {
+                var value = this.value;
+                $.ajax({
+                    type: "GET",
+                    url: "/data/?task=loadeduinstitutes&localid="+value,
+                    dataType: "json"
+                }).done(function( msg ) {
+                    $('#schoolName').children().remove();
+                    var optionItem = {
+                        tag:     'option',
+                        value:     '',
+                        html:     ''
+                    };
+                    $('#schoolName').json2html({},optionItem);
+                    for(obj in msg){
+                        optionItem.value = ''+msg[obj].id;
+                        optionItem.html  = msg[obj].name;
+                        $('#schoolName').json2html({},optionItem);
+                        console.log(optionItem);
+                    }
+
+                    $('#schoolName').parent().css('display','');
+                    $('#schoolName').trigger('refresh');
+                });
+            }
+        });
+
+
+
+        $('#repeater-spec').on('change', '.Speciality', function(){
+            var faculty_select = $(this).parent().next().children('.Faculty');
+            var education_form_el = $(this).parent().next().next().children('.filter_body');
+            education_form_el.empty();
+            education_form_el.parent().css('display','none');
+
+            if(this.value == ''){
+
+                faculty_select.val('').parent().css('display','none');
+                faculty_select.trigger('refresh');
+
+            } else {
+
+                $.ajax({
+                    type: "GET",
+                    url: "/data/?task=loadfacs&specid="+this.value,
+                    dataType: "json"
+                }).done(function( msg ) {
+                    faculty_select.children().remove();
+
+                    if (msg.length > 1){
+                        faculty_select.json2html({},repeaterSpecItem.option);
+                    }
+
+                    for(var i=0; i<msg.length; i++){
+                        msg[i].selected = (msg.length == 1);
+
+                        faculty_select.json2html(msg[i],repeaterSpecItem.option);
+                    }
+                    faculty_select.parent().css('display','');
+                    faculty_select.trigger('refresh');
+                    if (msg.length == 1) faculty_select.change();
+                });
+            }
+        });
+
+
+        $('#repeater-spec').on('change', '.Faculty', function(){
+            var speciality_select = $(this).parent().prev().children('.Speciality');
+            var education_form_el = $(this).parent().next().children('.filter_body');
+
+            var spo = ($('#EduEducationType').val() == 3);
+            var school = ($('#EduEducationType').val() == 4);
+            if(this.value == ''){
+                education_form_el.empty();
+                education_form_el.parent().css('display','none');
+            } else {
+                education_form_el.empty();
+                $.ajax({
+                    type: "GET",
+                    url: "/data/?task=loadeduforms&facid="+this.value+'&specid='+speciality_select.val()+'&onlyspo='+((spo)?'1':'0') + '&school='+((school)?'1':'0'),
+                    dataType: "json"
+                }).done(function( msg ) {
+                    education_form_el.parent().css('display','');
+                    if (msg.length != 0){
+                        var efs = get_edu_forms(msg, []);
+                        for(var e in efs){
+                            education_form_el.json2html(efs[e],repeaterSpecItem.filter);
+                            education_form_el.parent().children().last().empty().css('display','none');
+                        }
+                    } else {
+                        if (spo)
+                            education_form_el.parent().children().last().html('<span class="error">Вы выбрали <b>основное общее образование</b>, и не можете учиться по этому направлению на этом факультете</span>');
+                        else if (school)
+                            education_form_el.parent().children().last().html('<span class="error">Вы выбрали <b>среднее полное общее образование</b>, и не можете учиться по этому направлению на этом факультете</span>');
+                        education_form_el.parent().children().last().css('display','block');
+                    }
+                });
+            }
+        });
+
+
+        $('#repeater-spec').on('click', '.SpecRangeRadio', function(e){
+            //Значение кликнутого радио
+            var v = parseInt(this.value);
+
+            //Номер repeater-item-родителя в общем репитере
+            var index = $(this).parents().eq(5).index();
+
+            //Перебираем все хранящиеся значения
+            for(var i=0; i<global.spec_ranges.length; i++){
+                if(i!=index && global.spec_ranges[i]==v){
+                    var inputs = $(this)
+                            .parents().eq(6)
+                            .children().eq(i)
+                            .children().eq(4)
+                            .children().eq(0)
+                            .children().eq(0)
+                            .children().eq(1)
+                            .children('td')
+                            .children('input');
+                    if (!!inputs[0].disabled){
+                        return false;
+                    } else {
+                        for(var r=0;r<inputs.length;r++){
+                            inputs[r].checked=(inputs[r].value == global.spec_ranges[index]);
+                        }
+
+                        $(inputs).parents().eq(6).children('.SpecRange').val(global.spec_ranges[index]);
+                        $(this).parents().eq(4).children('.SpecRange').val(v);
+
+                        global.spec_ranges[i]=parseInt(global.spec_ranges[index]);
+                        global.spec_ranges[index]=v;
+                        return true;
+                    }
+                }
+            }
+        });
+
+
+        $('#repeater-spec').on('change', '.edu_form_checkbox', function(){
+            var v = !!this.checked;
+            var hid = $(this).parents().eq(2).children('input[type=hidden]');
+            var tmp;
+            if (v){
+                $(this).parent().addClass('checked');
+                var new_val = (hid.val())?hid.val() + ',' + this.name.slice(7):this.name.slice(7);
+                hid.val(new_val);
+            } else {
+                $(this).parent().removeClass('checked');
+                tmp = [];
+                var tmp2 = hid.val().split(',');
+                for(var i in tmp2){
+                    if(tmp2[i] == this.name.slice(7)) continue;
+                    tmp.push(tmp2[i]);
+                }
+                hid.val(tmp.join(','))
+            }
+            tmp = hid.val().split(',');
+            var l=false;
+            for (i=0;i<tmp.length;i++){
+                if (tmp[i] == 10 || tmp[i] == 13 || tmp[i] == 24){
+                    l = true;
+                    break;
+                }
+            }
+            if (l){
+                $(this).parents().eq(2).children('.message').html('Для поступления на целевой набор, вы должны предоставить договор с предприятием').css('display','block');
+            } else {
+                $(this).parents().eq(2).children('.message').html('').css('display','none');
+            }
+        });
+
+
+        $('#repeater-spec').on('click', '.eduform_filter', function(e){
+            if (e.target.className == 'edu_form_checkbox') return true;
+            else {
+                var checkbox = $(this).children().eq(0).click();
+            }
+        });
+
+        $('#EduDiplomType').on('change', function(e){
+            var options = $('#EduEducationType').children();
+            switch ($(this).val()){
+                case '1':
+                case '2':
+                case '3':
+                    for (var i=0; i<options.length; i++){
+                        var opt = options.eq(i);
+                        if (opt.val() == '' || opt.val() == 3 || opt.val() == 4){
+                            opt.attr('disabled',false);
+                        } else {
+                            opt.attr('disabled',true);
+                        }
+                    }
+                    break;
+                default:
+                    for (var i=0; i<options.length; i++){
+                        var opt = options.eq(i);
+                        opt.attr('disabled',false);
+                    }
+                    break;
+            }
+            $('#EduEducationType').trigger('refresh');
+        });
+
+
+
+
+        $('#EduEducationType').on('change', function(e){
+            $('.Faculty').change();
+        });
+
+        $('select').selectbox();
+
+    });
+</script>
+
+<script type="text/javascript">
+function validate(selector, elem){
+    var russian = ($('#Citizenship').val() == 10);
+    switch (selector){
+        case '#PassportSer':
+            return ( !elem.val() || !russian || elem.val().match(/^(\d{4})$/g) != null);
+            break;
+
+        case '#PassportNumb':
+            return ( !elem.val() || !russian || elem.val().match(/^(\d{6})$/g) != null);
+            break;
+
+        case '#CodUVD':
+            return ( !elem.val() || !russian || elem.val().match(/^(\d{3})-(\d{3})$/g) != null);
+            break;
+
+        case '.EgNumber':
+            return ( !elem.val() || !russian || elem.val().match(/^(\d{2})-(\d{9})-(\d{2})$/g) != null);
+            break;
+
+        case '.EgMark':
+            return ( !elem.val() || elem.val()<=100 && elem.val()>0);
+            break;
+
+        case '.hasDatepicker':
+            if (!elem.val()) return true;
+            var reg = /^(\d{4})-(\d{2})-(\d{2})$/g.exec(elem.val());
+            if (reg == null) return false;
+            console.log(reg);
+            var date = new Date();
+            var year_pass = (date.getFullYear()>=reg[1] && reg[1]>date.getFullYear()-100);
+            var month_pass = (12>=reg[2] && reg[2]>0);
+            var day_pass = (31>=reg[3] && reg[3]>0);
+            return (year_pass && month_pass && day_pass);
+            break;
+
+    }
+}
+
+$(document).ready(function(){
+    id = ['#PassportSer', '#PassportNumb', '#CodUVD'];
+    for (var i in id ){
+        $(id[i]).on('keyup', function(){
+            if (validate('#'+this.id, $(this))){
+                $(this).parent().removeClass('error');
+            }
+        });
+
+        $(id[i]).on('change', function(){
+            if (validate('#'+this.id, $(this))){
+                $(this).parent().removeClass('error');
+            } else {
+                $(this).parent().addClass('error');
+            }
+        });
+    }
+
+    $('#repeater-exam').on('keyup', '.EgNumber', function(){
+        if (validate('.EgNumber', $(this))){
+            $(this).parent().removeClass('error');
+        }
+    });
+
+
+    $('#repeater-exam').on('keyup', '.EgMark', function(){
+        if (validate('.EgMark', $(this))){
+            $(this).parent().removeClass('error');
+        }
+    });
+
+
+    $('#sform').on('keyup', '.hasDatepicker', function(){
+        if (validate('.hasDatepicker', $(this))){
+            $(this).parent().removeClass('error');
+        }
+    });
+
+    $('#repeater-exam').on('change', '.EgNumber', function(){
+        if (validate('.EgNumber', $(this))){
+            $(this).parent().removeClass('error');
+        } else {
+            $(this).parent().addClass('error');
+        }
+    });
+
+    $('#repeater-exam').on('change', '.EgMark', function(){
+        if (validate('.EgMark', $(this))){
+            $(this).parent().removeClass('error');
+        } else {
+            $(this).parent().addClass('error');
+        }
+    });
+
+    $('#sform').on('change', '.hasDatepicker', function(){
+        if (validate('.hasDatepicker', $(this))){
+            $(this).parent().removeClass('error');
+        } else {
+            $(this).parent().addClass('error');
+        }
+    });
+
+    $('#save_button_save, #save_button_save_fixed').on('click', function(){
+        $('form#glForm').submit();
+    });
+
+    $('#save_button_approve, #save_button_approve_fixed').on('click', function(){
+        $('#approve').val(1);
+        $('form#glForm').submit();
+    });
+
+    $('form#glForm').submit(function(){
+        var failed_elem = false;
+        var elem;
+
+        elem = $('#PassportSer');
+        if (!validate('#PassportSer', elem)){
+            elem.parent().addClass('error');
+            if(!failed_elem) failed_elem = elem;
+        }
+
+        elem = $('#PassportNumb');
+        if (!validate('#PassportNumb', elem)){
+            elem.parent().addClass('error');
+            if(!failed_elem) failed_elem = elem;
+        }
+
+        elem = $('#CodUVD');
+        if (!validate('#CodUVD', elem)){
+            elem.parent().addClass('error');
+            if(!failed_elem) failed_elem = elem;
+        }
+
+        $('.EgNumber').each(function(){
+            elem = $(this);
+            if (!validate('.EgNumber', elem)){
+                elem.parent().addClass('error');
+                if(!failed_elem) failed_elem = elem;
+            }
+        });
+
+        $('.EgMark').each(function(){
+            elem = $(this);
+            if (!validate('.EgMark', elem)){
+                elem.parent().addClass('error');
+                if(!failed_elem) failed_elem = elem;
+            }
+        });
+
+
+        $('.hasDatepicker').each(function(){
+            elem = $(this);
+            if (!validate('.hasDatepicker', elem)){
+                elem.parent().addClass('error');
+                if(!failed_elem) failed_elem = elem;
+            }
+        });
+
+        if (failed_elem){
+            $('html, body').animate({
+                scrollTop: failed_elem.offset().top - 200
+            }, 200);
+            return false;
+        }
+    });
+
+
+})
+
+</script>
+{% endblock %}

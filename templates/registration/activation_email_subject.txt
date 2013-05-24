@@ -1,0 +1,1 @@
+{% load i18n %} Данные для входа abiturient.ulsu.ru

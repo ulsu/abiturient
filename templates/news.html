@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% load static %}
+{% get_static_prefix as STATIC_URL %}
+
+{% block css %}
+<link href="{{STATIC_URL}}css/style_news.css" rel="stylesheet">
+{% endblock %}
+
+{% block head %}
+	Новости
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $('div.expand').click(function(){
+        $(this).parent().find('div.news_block').find('.next_news').slideToggle();
+    })
+})
+</script>
+
+<div class="tab_faculty">
+    {% for n in news %}
+    <div class="news">
+        <div id="data" style="margin-top:10px;">{{n.title}} (16 марта 2013г.)</div>
+        <div class="news_block" style="margin-top:20px;">
+            <div class="text_news">
+                {{ n.introtext|safe }}
+            </div>	
+            <div class="next_news">
+                {{ n.fulltext|safe }}
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+        {%if n.fulltext %}
+        <div class="expand"><a href="javascript://"><ul><li></li><li></li><li></li></ul></a></div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "index.html" %}
+{% load static %}
+{% get_static_prefix as STATIC_URL %}
+
+{% block head %}
+	Вход
+{% endblock %}
+
+{% block content %}
+<div id="color_border" style="border: 1px black solid;padding: 28px;font-family: segoe ui;margin-top: 40px;">
+<form method="post" action="">
+    Логин:
+    <div>
+        <input type="text" name="username" style="margin:0; width: 300px;"/>
+    </div>
+    Пароль:
+    <div>
+        <input type="password" name="password" style="margin:0; width: 300px;"/>
+    </div>
+    <div style="margin-top: 20px;float: left;margin-right: 30px;">
+        <input type="submit" id="saveForm" value="Сохранить" class="button_save"/>
+        <div class="button-go"></div>Войти
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <input type="button" id="saveForm" value="Сохранить" class="button_save" style="width: 200px;" OnClick="location='/accounts/register/'"/>
+        <div class="button-registration"></div>Регистрация
+    </div>
+
+    <input type="hidden" name="next" value="{{next}}" />
+</form>
+</div>
+{% endblock %}

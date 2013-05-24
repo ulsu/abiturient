@@ -1,0 +1,190 @@
+{% extends "index.html" %}
+{% load static %}
+{% get_static_prefix as STATIC_URL %}
+{% load oddtocount %}
+
+
+{% block css %}
+<link href="{{STATIC_URL}}css/style_faculty.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/jpaginate.css">
+
+{% endblock %}
+
+
+{% block head %}
+    Факультеты
+{% endblock %}
+
+
+
+{% block js %}
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.paginate.js"></script>
+{% endblock %}
+
+
+
+{% block content %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $('div.p').css('display','none');
+    $('div.p').first().css('display','').addClass('_current');
+
+    $("#page").paginate({
+				count 		: 13,
+				start 		: {{page}},
+				display     : 13,
+				border					: true,
+				border_color			: '#cecece',
+				text_color  			: '#dcdcdc',
+				background_color    	: '#dcdcdc',	
+				border_hover_color		: '#ccc',
+				text_hover_color  		: '#D98205',
+				background_hover_color	: '#D98205', 
+				mouse					: 'press',
+				onChange     			: function(page){
+											$('._current','#facult').removeClass('_current').fadeOut(500,
+                                                function(){
+                                                    $('.p').eq(page-1).addClass('_current').fadeIn(500);
+                                                });
+										  }
+			});
+            
+    $('div').each(function(a){
+        if($(this).attr("class") == 'expand')
+            $(this).click(function()
+            {
+                if($(this).parent().find('div#container').css("display") == 'none')
+                {
+                    $(this).fadeOut('slow',
+                        function(){
+                            $(this).find('a').find('img').attr('src','{{STATIC_URL}}image/turn_white.png');
+                            $(this).parent().find('div.text_faculty').fadeOut('fast');
+                            $(this).parent().find('div.img_faculty').animate({ width: '102%'}, 
+                                function(){
+                                    $(this).parent().find('div#container').slideDown(500,function(){$(this).parent().find('div#container').children('.turn').fadeIn('slow');});
+                                });
+                            $(this).fadeIn('slow');
+                        });
+                }
+                else
+                {
+                    $(this).parent().find('div#container').children('.turn').fadeOut('slow');
+                    $(this).fadeOut('slow',
+                        function(){
+                            $(this).find('a').find('img').attr('src','{{STATIC_URL}}image/expand.png');
+                            $(this).parent().find('div#container').slideUp('slow', function(){
+                            $(this).parent().find('div.img_faculty').animate({ width: '25%'},
+                                function(){
+                                    $(this).parent().find('div.text_faculty').fadeIn('slow');
+                                });
+                            });
+                            $(this).fadeIn('slow');
+                        });
+                    
+                }
+            })
+            
+        if($(this).attr("class") == 'turn')
+            $(this).click(function()
+            {
+                $('html,body').animate({scrollTop:0}, 'fast');
+                $(this).fadeOut('slow');
+                $(this).parent().parent().find('div.expand').fadeOut('slow');
+                $(this).parent().slideUp('slow',function(){
+                    $(this).parent().parent().find('div.expand').find('a').find('img').attr('src','{{STATIC_URL}}image/expand.png');
+                    $(this).parent().parent().find('div.img_faculty').animate({ width: '25%'},
+                        function(){
+                            $(this).parent().parent().find('div.text_faculty').fadeIn('slow');
+                        });
+                });
+                $(this).parent().parent().find('div.expand').fadeIn('slow');
+            })
+    })
+
+    $(".language_ru").click(function()
+    {
+        $(this).parent().parent().find(".info_ru").css("display" ,"");
+        $(this).parent().parent().find(".info_en").css("display" ,"none");
+        $(this).parent().parent().find(".info_de").css("display" ,"none");
+    });
+    $(".language_en").click(function()
+    {
+        $(this).parent().parent().find(".info_ru").css("display" ,"none");
+        $(this).parent().parent().find(".info_en").css("display" ,"");
+        $(this).parent().parent().find(".info_de").css("display" ,"none");
+    });
+    $(".language_de").click(function()
+    {
+        $(this).parent().parent().find(".info_ru").css("display" ,"none");
+        $(this).parent().parent().find(".info_en").css("display" ,"none");
+        $(this).parent().parent().find(".info_de").css("display" ,"");
+    });
+})
+</script>
+<div id="facult">
+
+{% for f in faculty %}
+ {% cycle '<div class="p">' '' %}
+
+<div class="tab_faculty">
+		<div class="img_faculty" {% if f.photo %} style="background-image: url('/static/image/fotofac/{{ f.photo }}');" {% endif %}></div>
+		<div class="text_faculty"><p>{{ f.introtext|safe }}</p>
+		</div>
+	<div style="clear:both;"></div>
+		<div class="name_faculty"><h4>{{ f.name|safe }}</h4></div>
+		<div class="expand"><a href="javascript://"><img src="{{STATIC_URL}}image/expand.png"></a></div>
+        <div id="container">
+        {% if  f.en or f.de %}
+            <div class="language">
+                <a class="language_ru" href="javascript://">RU</a>
+                {% if f.fulltext_en %}
+                    | <a class="language_en" href="javascript://">EN</a>
+                {% endif %}
+                {% if f.fulltext_de %}
+                    | <a class="language_de" href="javascript://">DE</a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+            <div class="info" style="width:90%;">
+                <div class="language-info">
+                    <div class="info_ru">
+                        {{ f.fulltext|safe }}
+                    </div>
+                    {% if f.fulltext_en %}
+                        <div class="info_en" style="display: none;">
+                            {{ f.fulltext_en|safe }}
+                        </div>
+                    {% endif %}
+                    {% if f.fulltext_de %}
+                        <div class="info_de" style="display: none;">
+                            {{ f.fulltext_de|safe }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div style="color: #52A365; font-size: 20px;margin-top: 13px;">Специальности факультета:</div>
+                {% for s in f.specialities %}
+                        <div style="margin-left:13px;">
+                            <a id="spec-link" href="javascript://" onClick="$(this).parent().next().slideToggle(); return false;">{{ s.speciality.name }}</a>
+                        </div>
+                        <div class="spec-info">
+                            {{ s.description|safe }}
+                        </div>
+                {% endfor %}
+            </div>
+            <div class="turn" style="float: right; margin:0; position: absolute; right:20px; bottom: 10px;display:none;">
+                <a href="javascript://"><img src="/static/image/turn.png"></a>
+            </div>
+        </div>
+</div>
+
+{% if forloop.revcounter0 or not forloop.counter|isodd %}{% cycle '' '</div>' %}{% else %}</div>{% endif %}
+
+{% endfor %}
+
+<div id="page" class="jPaginate"></div>
+</div>
+{% endblock %}
+
+

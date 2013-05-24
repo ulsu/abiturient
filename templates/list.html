@@ -1,0 +1,214 @@
+{% extends "index.html" %}
+{% load i18n %}{% load static %}
+{% get_static_prefix as STATIC_URL %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.dataTables.css">
+<style>
+    #list th{
+        background-color: #fff;
+        color: #52A365;
+    }
+
+    .toolbar{
+    margin-top:5px;
+    float:left;
+    }
+
+    .toolbar .original_filter, .toolbar .approved_filter{
+    text-decoration: none;
+    display:inline-block;
+    border-bottom: 1px #000000 dashed;
+    padding: 3px;
+    margin-left:8px;
+    }
+
+    .toolbar .active_filter{
+    background-color: #52A365;
+    color: #ffffff;
+    border-bottom: 1px #52A365 solid !important;
+    }
+
+    #original_filters_input input, #approved_filters_input input{
+    display:none;
+    }
+</style>
+{% endblock %}
+
+
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var ablist = $('#list').dataTable( {
+            "bPaginate": true,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false,
+            "asStripeClasses" : [],
+            "aoColumns": [
+                { },
+                { },
+                {"bSortable": false },
+                {"bSortable": false },
+                {"bSortable": false },
+                { },
+                { "sWidth":"10%", "bSearchable": false,  "bSortable": false},
+                { "sWidth":"10%", "bSearchable": false,  "bSortable": false}
+            ],
+            "oLanguage": {
+                "sLengthMenu": "Display _MENU_ records per page",
+                "sZeroRecords": "Ничего не найдено",
+                "sInfo": "Showing _START_ to _END_ of _TOTAL_ records",
+                "sInfoEmpty": "Showing 0 to 0 of 0 records",
+                "sInfoFiltered": "(filtered from _MAX_ total records)",
+                "oPaginate": {
+                    "sPrevious": "Назад",
+                    "sNext": "Вперёд"
+                },
+                "sSearch": "Найти абитуриента:"
+            },
+            "sDom": '<"toolbar">lfr<"clear"><"giveHeight"t>ip',
+            "aoColumnDefs": [
+
+                { "mRender": function( data, type, full ) {
+                    if (type == 'display'){
+                        if (data == 1){
+                            return '<img src="{{ STATIC_URL }}image/checkbox.png" title="Поданы оригиналы документов" />';
+                        } else return '';
+                    } else return data;
+
+                }, "bVisible": true, "aTargets": [ 4 ]},
+                { "mRender": function( data, type, full ) {
+                    var data_arr = data.split('|');
+                    if (type == 'display'){
+                            return data_arr[1];
+                    } else return data_arr[0];
+
+                }, "bVisible": true, "aTargets": [ 5 ]}
+            ]
+         } );
+        $('.toolbar').html('' +
+                '<div id="original">' +
+                    '<div id="original_filters_a">' +
+                        '<a id="filter_original" class="original_filter active_filter" href="#">Оригинал</a>' +
+                        '<a id="filter_copy" class="original_filter active_filter" href="#">Копия</a>' +
+                    '</div>' +
+                    '<div id="original_filters_input">'+
+                        '<input id="checkbox_original" type="checkbox" checked="checked" name="checkbox_original" />' +
+                        '<input id="checkbox_copy" type="checkbox" checked="checked" name="checkbox_copy" />' +
+                    '</div>' +
+                '</div>' +
+
+                '<div id="approved" style="margin-top:20px;">' +
+                    '<div id="approved_filters_a">' +
+                        '<a id="filter_approved" class="approved_filter" href="#">Активировано</a>' +
+                        '<a id="filter_not_approved" class="approved_filter active_filter" href="#">Неактивировано</a>' +
+                    '</div>' +
+                    '<div id="approved_filters_input">'+
+                        '<input id="checkbox_approved" type="checkbox" name="checkbox_approved" />' +
+                        '<input id="checkbox_not_approved" type="checkbox" checked="checked" name="checkbox_not_approved" />' +
+                    '</div>' +
+                '</div>' +
+                '');
+
+        $.fn.dataTableExt.afnFiltering.push(
+                function( oSettings, aData, iDataIndex ) {
+                    var o = $('#checkbox_original').attr('checked') == 'checked';
+                    var c = !!$('#checkbox_copy').attr('checked');
+                    var status = aData[4];
+
+                    if((status == 0) && c) return true;
+                    else if(status == 1 && o) return true;
+                    else return false;
+                }
+        );
+
+        $.fn.dataTableExt.afnFiltering.push(
+                function( oSettings, aData, iDataIndex ) {
+                    var o = $('#checkbox_approved').attr('checked') == 'checked';
+                    var c = !!$('#checkbox_not_approved').attr('checked');
+                    var status = aData[5];
+
+                    if((status == 0) && c) return true;
+                    else if(status != 0 && o) return true;
+                    else return false;
+                }
+        );
+
+        $('.original_filter').on('click', function(){
+            var filter_num = $(this).index();
+            var checkbox = $('#original_filters_input').children().eq(filter_num);
+            console.log(checkbox);
+            if(checkbox.attr('checked') == 'checked'){
+                checkbox.attr('checked', false);
+                $(this).removeClass('active_filter');
+            } else {
+                checkbox.attr('checked', true);
+                $(this).addClass('active_filter');
+            }
+            ablist.fnDraw();
+            return false;
+        });
+
+        $('.approved_filter').on('click', function(){
+            var filter_num = $(this).index();
+            var checkbox = $('#approved_filters_input').children().eq(filter_num);
+            console.log(checkbox);
+            if(checkbox.attr('checked') == 'checked'){
+                checkbox.attr('checked', false);
+                $(this).removeClass('active_filter');
+            } else {
+                checkbox.attr('checked', true);
+                $(this).addClass('active_filter');
+            }
+            ablist.fnDraw();
+            return false;
+        });
+
+        function draw(){
+            ablist.fnDraw();
+        }
+
+        draw();
+
+    } );
+</script>
+{% endblock %}
+
+{% block content %}
+<a href="/add/">Добавить абитуриента</a>
+<br />
+<br />
+<table id="list">
+    <thead>
+        <tr>
+            <th>Паспорт</th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th></th>
+            <th>Дата подтверждения</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in users %}{% if item.LastName %}
+        <tr>
+            <td>{{item.PassportSer}} {{item.PassportNumb}}</td>
+            <td>{{item.LastName}}</td>
+            <td>{{item.FirstName}}</td>
+            <td>{{item.MiddleName}}</td>
+            <td>{% if item.Original %}1{% else %}0{% endif %}</td>
+            <td>{% if item.Approved %}{{ item.approve_date|date:"ymdHi" }}|{{ item.approve_date|date:"d E H:i" }}{% else %}0|{% endif %}</td>
+            <td><a href="/edit/{{item.id}}/">Редактировать</a></td>
+            <td><a href="/print/{{item.id}}/">Печатать</a></td>
+        </tr>
+    {% endif %}{% endfor %}
+    </tbody>
+</table>
+{% endblock %}

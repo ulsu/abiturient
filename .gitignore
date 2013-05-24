@@ -1,0 +1,6 @@
+.idea/
+deploy/
+media/
+manage.py
+abiturient/settings.py
+*.pyc

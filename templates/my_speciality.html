@@ -1,0 +1,57 @@
+{% extends "index.html" %}
+{% load static %}
+{% get_static_prefix as STATIC_URL %}
+
+{% block head %}
+    Специальности
+{% endblock %}
+
+{% block content %}
+<div id="color_border" style="border:1px solid;margin-top: 40px;padding:15px;">
+<p class="header1">Ваши экзамены:</p>
+<ul class="exam_list">
+    {% for e in exams %}
+    <li>{{ e.name }}</li>
+    {% endfor %}
+    </ul>
+    <br />
+    <br />
+{% if specialities %}
+ <p class="header1">Вы можете поступить на следующие специальности:</p>
+{% for s in specialities %}
+    <br />
+    <p class="header2">{{ s.speciality.name }}</p>
+    <ul>
+    {% for f in s.faculties %}
+        <li>{{ f.faculty.name }}
+        <ul>
+            {% for ef in f.edu_forms %}
+            <li>{{ ef.name }}</li>
+            {% endfor %}
+        </ul>
+        </li>
+    {% endfor %}
+    </ul>
+{% endfor %}
+{% else %}
+ <p class="header1">Вы не можете поступить в УлГУ с этим набором экзаменов</p>
+{% endif %}
+</div>
+{% endblock %}
+
+
+{% block css %}
+<style type="text/css">
+    .header1{
+        font-size: 120%;
+    }
+    .header2{
+        font-size: 110%;
+        color: #52A365;
+    }
+
+    ul.exam_list{
+        list-style: none;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,296 @@
+{% extends "index.html" %}
+{% load static %}
+{% get_static_prefix as STATIC_URL %}
+
+
+{% block content %}
+    <div class="domtab">
+	<ul class="domtabs">
+		<li class="active"><a href="#shool" id="shool_color">Школьнику</a></li>
+        <li><a href="#college" id="college_color">Закончившему колледж</a></li>
+		<li><a href="#bachelor" id="bachelor_color">Выпускнику вуза</a></li>
+		<li><a href="#foreigner" id="foreigner_color">Иностранному гражданину</a></li>
+		<li><a href="#other_vuz" id="other_vuz_color">Перевод из другого ВУЗа</a></li>
+		<li><a href="#programms" id="programms_color">Программы</a></li>
+		<li><a href="#what" id="what_color">Задать вопрос</a></li>
+		
+	</ul>
+	<div id="shool_div">
+        <form action="/speciality/" method="POST">
+            <a name="shool" id="shool"></a>
+            <div id="img_tab_shool">
+                <p>Дорогие выпускники школ, лицеев, гимназий! Приветствуем вас на сайте приемной комиссии Ульяновского государственного университета! </p>
+                <p>Здесь вы можете ознакомиться с основной информацией, необходимой для поступления в стены нашего университета: правилами приема, перечнем направлений и специальностей, условиями обучения, информацией об общежитиях и пр.</p>
+                <p>Вам представляется возможность зарегистрироваться на нашем сайте и <a class="tab-link" href="/accounts/personal">подать заявление</a> о поступлении в электронной форме.</p>
+                <p>Ниже для вас представлена возможность определить набор направлений и специальностей, на которые вы можете поступать в УлГУ с вашими результатами ЕГЭ.
+                Напоминаем вам, что согласно правилам приема в 2013 г. вы можете выбрать для поступления не более трех направлений (специальностей).</p>
+                <p>Желаемое образование:</p>
+                <br />
+                <div style="height:30px;">
+                    <select id="edu_select" name="edu">
+                        <option value="">&nbsp;</option>
+                        <option value="1">высшее</option>
+                        <option value="2">среднее профессиональное</option>
+                    </select>
+                </div>
+                <div id="exam_select" style="display: none;">
+                <p>Пожалуйста, выберите предметы, по которым вы сдавали экзамены (Русский язык и <span id="math">Математика</span> уже введены в систему, их выбирать не нужно):</p>
+                    <div class="repeater_exam"></div>
+                    <input type="submit" value="Далее" class="next_button" />
+                </div>
+            </div>
+        </form>
+	</div>
+    
+	<div id="bachelor_div">
+		<a name="bachelor" id="bachelor"></a>
+		<div id="img_tab_bachelor">
+			<p>Дорогие выпускники высших учебных заведений! Приветствуем вас на сайте приемной комиссии Ульяновского государственного университета! </p>
+            <p>Здесь вы можете ознакомиться с основной информацией, необходимой для поступления в магистратуру УлГУ: правилами приема, перечнем направлений, условиями обучения, информацией об общежитиях.</p>
+            <p>Согласно правилам приема в 2013 г. для поступления на программы магистратуры вам необходимо будет сдать экзамен по специальности, соответствующей выбранному направлению.</p>
+            <p>Для желающих поступать на сокращенные программы (второе высшее образование) в 2013 г. единственным вступительным испытанием является экзамен по русскому языку.</p>
+            <p>Кроме того, вы можете ознакомиться с правилами <a href="http://www.ulsu.ru/science/ppo/aspir/" class="tab-link">поступления в аспирантуру</a>.</p>
+
+		</div>
+	</div>
+    
+	<div id="college_div">
+        <form action="/speciality/" method="POST">
+            <a name="college" id="college"></a>
+            <div id="img_tab_college">
+                <p>Дорогие выпускники колледжей, техникумов и училищ! Приветствуем вас на сайте приемной комиссии Ульяновского государственного университета! </p>
+                <p>Здесь вы можете ознакомиться с основной информацией, необходимой для поступления в в УлГУ: правилами приема, перечнем направлений и специальностей, условиями обучения, информацией об общежитиях и пр.</p>
+                <p>Вы имеете возможность поступить на любую программу бакалавриата и специалитета, сдав соответствующие вступительные испытания в форме ЕГЭ.</p>
+                <p>Однако, если вы поступаете по направлению, соответствующему вашей специальности среднего профессионального образования, то вы можете сдавать вступительные испытания в форме, предлагаемой УлГУ. При этом при поступлении на полный срок необходимо сдавать все вступительные испытания, соответствующие выбранному направлению, а при поступлении на сокращенные программы (на базе среднего профессионального образования) единственным вступительным испытанием является экзамен по русскому языку.</p>
+                <p>Ниже для вас представлена возможность определить набор направлений и специальностей, на которые вы можете поступать в УлГУ на полный срок обучения с вашими результатами ЕГЭ.</p>
+                <p>Напоминаем вам, что согласно правилам приема в 2013 г. вы можете выбрать для поступления не более трех направлений (специальностей).</p>
+                <p>Пожалуйста, выберите предметы, по которым Вы сдавали экзамены (Русский язык и Математика уже введены в систему, их выбирать не нужно):</p>
+
+                <div class="repeater_exam"></div>
+                <input type="submit" value="Далее" class="next_button" />
+            </div>
+        </form>
+	</div>
+    
+	<div id="foreigner_div">
+		<a name="foreigner" id="foreigner"></a>
+		<div id="img_tab_foreigner">
+			<p>Уважаемые абитуриенты из других государств!</p>
+            <p>В 2013 г. прием иностранных граждан для обучения за счет средств соответствующего бюджета осуществляется в пределах квоты, установленной Правительством Российской Федерации, по направлениям Министерства образования и науки Российской Федерации. Прием иностранных граждан, в УлГУ для получения образования за счет средств соответствующего бюджета, а также для обучения по договорам с оплатой стоимости обучения физическими и (или) юридическими лицами осуществляется на конкурсной основе. </p>
+            <p>В УлГУ вопросами обучения иностранных граждан занимается <a href="http://www.ulsu.ru/com/centres/cie/" class="tab-link">Центр международного образования</a>. Структуру Центра составляют сектор по работе с иностранными гражданами и подготовительное отделение.</p>
+		</div>
+	</div>
+    
+	<div id="other_vuz_div">
+		<a name="other_vuz" id="other_vuz"></a>
+		<div id="img_tab_other_vuz"> 
+            <p>Уважаемые студенты!</p>
+            <p>Процедура перевода студента из другого вуза в Ульяновский государственный университет регламентируется <a class="tab-link" href="http://tqm.ulsu.ru/documents/PD-2-08-06.pdf">положением «О порядке перевода студентов из высших учебных заведений РФ в УлГУ и переходе студентов с одной образовательной программы на другую»</a>.</p>
+            <p>Вопросами перевода студентов занимается <a class="tab-link" href="http://www.ulsu.ru/com/services/education/umu/">Учебно-методическое управление</a> Ульяновского государственного университета.</p>
+		</div>
+	</div>
+    
+	<div id="programms_div">
+		<a name="programms" id="programms"></a>
+		<div id="img_tab_programms"> 
+            <p>В данном разделе вы можете ознакомиться с программами вступительных испытаний, проводимых Ульяновским государственным университетом для той категории граждан, которые имею право сдавать вступительные испытания в форме, предлагаемой УлГУ. Кроме того, здесь представлены программы дополнительных вступительных испытаний творческой или профессиональной направленности, проводимых по предметам, по которым не проводится ЕГЭ, по направлениям подготовки и специальностям, требующим наличия у поступающих лиц определенных творческих способностей и физических качеств.</p>
+            <ul>
+                <li><a class="tab-link" href="http://www.ulsu.ru/images/stories/img/602206584.doc">Программа творческих экзаменов</a></li>
+                <li><a target="_blank" title="fizkultura2012" class="tab-link" href="http://www.ulsu.ru/images/stories/geog1/fizkultura2012.doc">Программа по физической культуре</a></li>
+                <li><a target="_blank" title="Программа по физкультуре " class="tab-link" href="http://www.ulsu.ru/images/stories/geog1/fizkulttamozh2012.doc">Программа по физической культуре для специальности «Таможенное дело»</a> </li>
+                <li><a class="tab-link" href="http://www.ulsu.ru/images/stories/img/602207196.doc">Программа вступительных экзаменов по русскому языку</a></li>
+                <li><a class="tab-link" href="http://www.ulsu.ru/images/stories/img/602207428.doc">Программа вступительных экзаменов по русской литературе</a></li>
+                <li><a class="tab-link" href="http://www.ulsu.ru/images/stories/img/602207568.doc">Программа вступительных экзаменов по иностранным языкам</a></li>
+                <li><a class="tab-link" href="http://www.ulsu.ru/images/stories/img/602207709.doc">Программа вступительных экзаменов по математике</a></li>
+                <li><a class="tab-link" href="http://www.ulsu.ru/images/stories/img/602207778.doc">Программа вступительных экзаменов по физике</a></li>
+                <li><a target="_blank" title="Программа вступительных экзаменов по химии " class="tab-link"  href="http://www.ulsu.ru/images/stories/geog1/chemistry2012.doc">Программа вступительных экзаменов по химии</a> </li>
+                <li><a class="tab-link" target="_blank" title="Программа вступительных экзаменов по биологии (на базе 9 классов)"  href="http://www.ulsu.ru/images/stories/geog1/biology9.doc">Программа вступительных экзаменов по биологии (на базе 9&nbsp;классов)</a></li>
+                <li><a class="tab-link" target="_blank" title="Программа вступительных экзаменов по биологии (на базе 11 классов)"  href="http://www.ulsu.ru/images/stories/geog1/biology11.doc">Программа вступительных экзаменов по биологии (на базе 11&nbsp;классов)</a></li>
+                <li><a class="tab-link" href="http://www.ulsu.ru/images/stories/img/602208015.doc">Программа вступительных экзаменов по истории России</a></li>
+                <li><a class="tab-link" href="http://www.ulsu.ru/images/stories/img/602208151.doc">Программа вступительных экзаменов по обществознанию</a></li>
+                <li><a class="tab-link" target="_blank" title="Темы письменных работ творческого экзамена для поступающих на специальность журналистика в 2012 г."  href="http://www.ulsu.ru/images/stories/geog1/topicsjounalist2012.doc">Темы письменных работ творческого экзамена для поступающих на специальность ЖУРНАЛИСТИКА в 2012&nbsp;г</a>.</li>
+                <li><a class="tab-link" target="_blank" title="Программа вступительных экзаменов в магистратуру по направлению МЕНЕДЖМЕНТ"  href="http://www.ulsu.ru/images/stories/geog1/magistraturamen.doc">Программа вступительных экзаменов в магистратуру по направлению МЕНЕДЖМЕНТ</a></li>
+                <li><a class="tab-link" target="_blank" title="Программа вступительных экзаменов в магистратуру по направлению ГОСУДАРСТВЕННОЕ И МУНИЦИПАЛЬНОЕ УПРАВЛЕНИЕ"  href="http://www.ulsu.ru/images/stories/geog1/magistraturagmu.doc">Программа вступительных экзаменов в магистратуру по направлению ГОСУДАРСТВЕННОЕ И МУНИЦИПАЛЬНОЕ УПРАВЛЕНИЕ</a></li>
+                <li><a class="tab-link" href="http://www.ulsu.ru/images/stories/img/602208876.doc">Программа вступительных экзаменов в магистратуру по направлению ТЕЛЕКОММУНИКАЦИИ</a></li>
+                <li><a class="tab-link" href="http://www.ulsu.ru/images/stories/img/602208985.doc">Программа вступительных экзаменов в магистратуру по направлению СОЦИАЛЬНАЯ РАБОТА</a></li>
+                <li><a class="tab-link" href="http://www.ulsu.ru/images/stories/img/60220919.doc">Программа вступительных экзаменов в магистратуру по направлению ПСИХОЛОГИЯ</a></li>
+                <li><a class="tab-link" target="_blank" title="Программа вступительных экзаменов в магистратуру по направлению ФИЛОЛОГИЯ"  href="http://www.ulsu.ru/images/stories/geog1/filologiyamagistr.doc">Программа вступительных экзаменов в магистратуру по направлению ФИЛОЛОГИЯ</a></li>
+            </ul> 
+        </div>
+	</div>
+    
+	<div id="what_div">
+       <form method="POST">
+		<a name="what" id="what"></a>
+		<div id="img_tab_what"> 
+			<p>
+				Используя форму, приведенную ниже, Вы можете отправить сообщение представителю Приемной комиссии УлГУ.
+			</p>
+			<p>
+				Также Вы можете задать вопрос в <a class="tab-link" href="http://vk.com/topic-34239299_25977989?offset=0">нашей группе ВКонтакте</a>.
+			</p>
+			<p>
+				Помните, все поля обязательны для заполнения.
+			</p>
+            <div style="float: left; margin-right: 15px;">
+
+            <p><b>График работы приемной комиссии (прием документов)</b></p>
+
+            <div style="margin-left: 20px;">
+		<table border="0" cellpadding="15" >
+			<tr>
+				<td>Пн.-Пт.:</td>
+				<td>&nbsp;9.00 - 17.00</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;">Сб.:</td>
+				<td>&nbsp;9.00 - 14.00</td>
+			</tr>
+		</table>
+		</div>
+
+            <p><b>Ответственный секретарь</b><br />
+                	Лутошкин Игорь Викторович, кандидат физико-математических наук доцент</p> 
+			
+
+            <p><b>Старший инспектор</b><br />
+                Ишкиняева Лилия Камилевна</p>
+
+            <p><b>Ведущий специалист</b> <br />
+                Державина Ольга Юрьевна</p>
+		
+		<p><b>Контактные данные:</b></p>
+
+			<ul>
+				<li>Адрес: 432000, Россия, г. Ульяновск, ул. Л.Толстого, 42, ауд.10</li> 
+                		<li>Телефон: (8422) 41-20-90</li> 
+				<li>e-mail: pk@ulsu.ru</li> 
+			</ul><br><br />
+
+            </div>
+			<form>
+				<input name="name" method="post" type="text" placeholder="Ваше имя" ><br />
+				<input  name="email" method="post"type="text" placeholder="Ваше e-mail" ><br />
+				<textarea rows="8" cols="60" name="text" placeholder="Ваше сообщение"></textarea>
+				<a href="#" id="send_next">
+                    <div class="button-send"></div>
+                    Отправить
+                </a>
+                <div style="clear: both;"></div>
+			</form>
+		</div>
+       </form>
+	</div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{{STATIC_URL}}js/jquery.ui.datepicker-ru.js"></script>
+<script src="{{STATIC_URL}}js/jquery.json2html-3.1-min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/domtab.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.paginate.js"></script>
+<script src="{{STATIC_URL}}js/jquery.selectbox.js"></script>
+<script type="text/javascript">
+
+var examItems =  [
+    {'id':'', 'name':'&nbsp;'},{% for e in exams %}
+    {'id':{{ e.id }}, 'name':'{{ e.name }}'}{% if forloop.revcounter0 %},{% endif %}{% endfor %}
+];
+
+var exam = {
+    'select':[{
+        'tag':'div',
+        'class':'exam_select',
+        'children':[{
+            'tag':'select',
+            'name':'exam[]',
+            'children': function(){return($.json2html(examItems, exam.option));}
+        },{
+            'tag':'span',
+            'class':'manage_exams ${class}'
+        }]
+
+    }],
+    'option':[{'tag':'option', 'value':'${id}', 'html':'${name}'}]
+};
+
+function toggleExams(val){
+    $('#exam_select').css('display', (val)?'block':'none' );
+    var math = 'Математика';
+    switch (val){
+        case '1':
+            math = 'Математика';
+            break;
+        case '2':
+            math = 'Алгебра';
+            break;
+    }
+    $('#math').html(math);
+}
+
+$(document).ready(function() {
+
+
+    var edu_select = $('#edu_select');
+    toggleExams(edu_select.val());
+
+    $('div.repeater_exam').json2html({'class':'add'},exam.select);
+
+	$('select').selectbox();
+
+    $('.repeater_exam').on('click', '.delete', function(){
+        $(this).parent().remove();
+    });
+
+    $('.manage_exams.add').click(function(e){
+		$(this).parents('div.repeater_exam').json2html({'class':'delete'},exam.select);
+		$('select').selectbox();
+		e.preventDefault();
+	});
+
+    edu_select.on('change', function(){
+        toggleExams($(this).val());
+    });
+
+    $( "#accordion" ).accordion();
+});
+</script>
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    span.manage_exams{
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        margin-left: 17px;
+    }
+
+    span.manage_exams.add{
+        background-image:url("{{ STATIC_URL }}image/add.png");
+    }
+    span.manage_exams.delete{
+        background-image:url("{{ STATIC_URL }}image/delete1.png");
+    }
+
+    .next_button{
+        height: 30px;
+        width: 100px !important;
+        border: none;
+        background-color: #ffffff;
+        box-shadow: none;
+        background-image: url("{{ STATIC_URL }}image/arrow.png");
+        background-repeat: no-repeat;
+        padding-left: 20px;
+    }
+
+    .next_button:hover{
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+</style>
+
+
+{% endblock %}

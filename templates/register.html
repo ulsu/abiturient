@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+{% load static %}
+{% get_static_prefix as STATIC_URL %}
+
+{% block head %}
+	Регистрация
+{% endblock %}
+
+{% block content %}
+<div id="login_form" style="border: 1px black solid;padding: 28px;font-family: segoe ui;margin-top: 40px;">
+<form action="/accounts/register/" method="POST">
+    E-mail:
+    <div>
+        <input type="text" name="email" maxlength="75" style="margin-top: 0"/>
+    </div>
+    <div style="margin-top: 20px;">
+        <input type="submit" id="saveForm" value="Сохранить" class="button_save" style="width: 200px;"/>
+        <div id="button_next"><div id="arrow"></div></div>Зарегистрироваться
+    </div>
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,129 @@
+.tab_faculty{
+background-color:#fafafa;
+margin: 38px 0 30px 0 ;
+padding:0 2% 0 0;
+position:relative;
+border:1px solid #ccc;
+}
+.img_faculty img{
+height:250px;
+}
+.img_faculty {
+float:left;
+margin-right:2%;
+height:250px;
+/*background-image:url(../image/facult_image.jpg); */
+background-image:url(../image/foto.png);
+background-position: center; 
+width:25%;
+}
+.text_faculty p{
+	font-family:segoe ui;
+	font-size:14px;
+	color:#222;
+	text-align:justify;
+}
+.text_faculty {
+padding-top:1%;
+}
+.name_faculty{
+background-color:rgba(0, 0, 0, 0.66);
+position:absolute;
+top:160px;
+left:20px;
+padding:15px 20px 20px 20px;
+}
+/* 1024 */
+@media screen and (max-width: 1024px)
+{
+    .name_faculty h4{
+        font-family:segoe ui;
+        color:#FFF;
+        font-size:19px;
+        font-weight:normal;
+        text-decoration:none;
+        min-width: 280px;
+    }
+}
+/* 1280+ */
+@media screen and (min-width: 1280px)
+{
+    .name_faculty h4{
+        font-family:segoe ui;
+        color:#FFF;
+        font-size:24px;
+        font-weight:normal;
+        text-decoration:none;
+        min-width: 280px;
+    }
+}
+
+.expand {
+position:absolute;
+bottom:20px;
+right:20px;
+top: 185px;
+height: 50px;
+}
+
+/*
+.expand  a {
+background-image:url(../image/expand.png); 
+padding:29px 46px 0px 29px;
+}
+*/
+
+
+#container{
+display:none;
+font-family:segoe ui;
+color:#222;
+font-size:14px;
+font-weight:normal;
+text-decoration:none;
+padding:20px ;
+}
+
+				
+@media screen and (max-device-width:960px) {
+		.name_faculty{
+background-color:rgba(0, 0, 0, 0.66);
+position:absolute;
+top:160px;
+left:20px;
+padding:15px 20px 20px 20px;
+}
+.name_faculty h4{
+font-family:segoe ui;
+color:#FFF;
+font-size:19px;
+font-weight:normal;
+text-decoration:none;
+}
+		
+}
+
+.spec-info{
+    display: none;
+    border: 1px #DCDCDC solid;
+    padding: 10px;
+    margin-top:10px;
+    margin-bottom: 10px;
+    margin-left: 13px;
+    text-align: justify;
+}
+
+#spec-link{
+    color: #858585!important;
+    display: inline-block;
+    border-bottom: 1px #858585 dashed;
+    text-decoration: none;
+    font-size:16px;
+    
+}
+#spec-link:hover{
+    border-bottom: 1px #D98205 dashed;
+    color: #D98205!important;
+}
+
+		

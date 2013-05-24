@@ -1,0 +1,391 @@
+{% load static %}
+{% get_static_prefix as STATIC_URL %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Абитурент 2013</title>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/style.css">
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/style_colors.css">
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/domtab.css">
+<link href="{{STATIC_URL}}css/selectbox.css" rel="stylesheet" />
+{% block css %}{% endblock %}
+<script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.carouFredSel.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/helper-plugins/jquery.ba-throttle-debounce.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/helper-plugins/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/helper-plugins/jquery.touchSwipe.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/helper-plugins/jquery.transit.min.js"></script>
+<script>    
+function get_cookie( cookie_name ){
+  var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
+ 
+  if ( results )
+    return ( unescape ( results[2] ) );
+  else
+    return null;
+}
+if(!get_cookie("var")){
+    document.cookie = "var=0;path=/";
+}
+
+$(document).ready(function() {
+    //
+
+    //
+	$('#slide').click(function(){
+		var duration = 600;
+        
+        {% if var %}
+        var i = true;
+        {% endif %}
+		if($('#head').css("display") == "none")
+		{
+            document.cookie = "var=1;path=/";
+			$('#head1').fadeOut(duration,function(){$('#top_menu_big').fadeIn(duration);});
+			$('#head').slideToggle('slow');
+		}
+		else {
+            document.cookie = "var=0;path=/";
+			$('#head').slideToggle('slow');
+			$('#top_menu_big').fadeOut(duration,function(){$('#head1').fadeIn(duration);});
+		}
+
+	})
+    
+    
+    $('#content_banner').carouFredSel({
+                mousewheel: true,
+                width: '100%',
+                visible:{
+                    min: 4,
+                    max: 6
+                },
+                auto: {
+						pauseOnHover: 'resume',
+                        duration: 500,
+                        timeoutDuration: 10000
+					},
+                responsive: true,
+                items: {
+						visible: {
+							min: 2,
+							max: 6
+						},
+                        }
+    });
+    
+    // основные цвета
+    var rn = Math.floor(Math.random()*4);
+    // E2AF13 #E2AF13
+    var back_color = '#52A365';
+    var menu_color = '#E2AF13';
+    var shadow_color = '#008256';
+    
+    switch(rn){
+        case 0:
+        {
+            back_color = '#52A365';
+            menu_color = '#E2AF13';
+            shadow_color = '#008256';
+        } break;
+        case 1:
+        {
+            back_color = '#D98205';
+            menu_color = '#8a5ead';
+            shadow_color = '#a79200';
+        } break;
+        case 2:        
+        {
+            back_color = '#00af80';
+            menu_color = '#d98205';
+            shadow_color = '#009273';
+        } break;
+        case 3:
+        {
+            back_color = '#D98205';
+            menu_color = '#31a8e2';
+            shadow_color = '#0089df'; 
+        } break;
+    }
+    
+    $('#top_box_top_big').css('background-color',back_color);
+    $('#top_menu').css('background-color',menu_color);
+    $('#top_box_button').css('background-color',menu_color);
+    $('#footer').css('background-color',back_color);
+    $('#top_menu_shadow').css('background-color',shadow_color);
+    $('.news_block').css('border-color',back_color);
+    $('#main-form').css('border-color',back_color);
+    $('#color_border').css('border-color',back_color);
+    $('#info-color-border').css('border-color',back_color);
+    
+    
+    $('div#data').each(function()
+    {
+        $(this).css('color',back_color);
+        $(this).parent().find('div.expand').css('background-color',back_color);
+    });
+    
+    // цвета новостей
+    var r = Math.floor(Math.random()*8);
+    var colors = ['color_green','color_dust','color_orange','color_violet','color_blue','color_grass','color_brown','color_vio'];
+    $('#news1').addClass(colors[r]);
+    $('#news2').addClass(colors[r+1]);
+    $('#news3').addClass(colors[r+2]);
+    $('#name_news1').addClass(colors[r]);
+    $('#name_news2').addClass(colors[r+1]);
+    $('#name_news3').addClass(colors[r+2]);
+    
+    // плитки
+    
+    var r = Math.floor(Math.random()*8);
+    var colors = ['color_green1','color_dust1','color_orange1','color_violet1','color_blue1','color_grass1','color_brown1','color_vio1'];
+    $('div.big-block').each(function()
+    {   
+        if(r > 7) 
+        {
+            r = 0;
+            $(this).addClass(colors[r]);
+        } else $(this).addClass(colors[r]);
+        r++;
+    });
+    //
+    $('div.big-block').each(function(){
+        $(this).css("border-color",$(this).css("background-color"));
+    });
+    // подложка
+    var k = Math.floor(Math.random()*6);
+    $('div#block-content').css("background-image","url('/static/image/foto"+k+".png')");
+    // hover
+    $('div.big-block').hover(
+        function(){
+            $(this).css("border-color","white");
+        },
+        function(){
+            $(this).css("border-color",$(this).css("background-color"));
+        }
+    );
+
+})
+</script>
+{% block js %}{% endblock %}
+</head>
+<body>
+<div id="top_box_wrap">
+	<div id="top_box">
+
+		<div id="top_box_top_big">
+		
+			<div id="head"{% if not var %} style="display: none;"{% endif %}>
+			<a href="/"><div id="logo"></div></a>
+			<div id="ulsu_big">Ульяновский государственный университет</div>
+				<div id="info_big">
+					<div id="tel"><h6>позвони нам</h6> 8 (8422) 41 20 90</div> 
+					<div id="cabinet">
+                        <div style="float: left;margin-right: 4px; margin-top:8px; ">
+                            <a href="/accounts/personal">{% if not user.is_anonymous %}Личный кабинет{% else %}Войти{% endif %}</a>
+                        </div>
+                        {% if not user.is_anonymous %}
+                        <div style="float: left; margin-top:2px;">
+                            <a  href="/accounts/logout">
+							<div class="logout_img"></div>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+				</div>
+			</div>
+			<div style="clear: both;"></div>
+			<div id="head1" style="padding: 1px;{% if var %} display: none;{% endif %}">
+				<div id="ulsu" style="padding-bottom:15px;">
+                    <a href="/" style="text-decoration: none; color: white;">
+                        <div style="float: left; margin-left: -8%; margin-top: -3px; margin-bottom: 11px;">
+                            <img src="/static/image/ulsu_mini.png" style="opacity: 0.85;">
+                        </div>
+                        <div style="float: left; margin-top: 5px;margin-left: -3%;">
+                            Ульяновский государственный университет
+                        </div>
+                    </a>
+                </div>
+                
+				<div id="info"> 
+                    8 (8422) 41 20 90   
+                    <a href="/accounts/personal">
+                    {% if not user.is_anonymous %}
+                        Личный кабинет
+                    {% else %}
+                        Войти
+                    {% endif %}
+                    </a>
+                    {% if not user.is_anonymous %}
+                    <a href="/accounts/logout" style="margin-left: 10px;">(Выйти)</a>
+                    {% endif %}
+                </div>
+			</div>
+			
+			<div id="top_menu_big"{% if not var %} style="display: none;"{% endif %}>
+			<ul type="none">
+				<li><a href="/news/">Вступительные экзамены</a></li>
+				<li><a href="/cost/">Стоимость обучения</a></li>
+				<li><a href="#">Льготы</a></li>
+				<li><a href="#">Апелляция</a></li>
+				<li><a href="/#what" onLoad="$('html,body').animate({scrollTop:0}, 'fast');">Контакты</a></li>	
+				<li><a href="http://www.ulsu.ru/prospective/comission/documents/">Нормативные документы</a></li>
+			</ul>
+		
+		</div>
+		<div style="clear:both;"></div>	
+		</div>
+		
+		<div id="top_menu_shadow"></div>
+		<div id="top_menu">
+			<ul type="none">
+				<li><a href="/news/">Новости</a></li>
+				<li><a href="/rules/">Правила приема</a></li>
+				<li><a href="/now/">Текущая информация</a></li>
+				<li><a href="/statistics/">Статистическая информация</a></li>
+				<li><a href="/faculty/">Факультеты</a></li>
+				
+				<li><a href="/accounts/personal/">Подать заявление</a></li>
+
+			</ul>
+			<div style="clear:both;"></div>
+		</div>
+		<a id="slide" href="javascript://"><div id="top_box_button">
+			<ul type="disc">
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div></a>
+
+	</div>
+    <div id="name"><h3>
+{% block head %}
+	Приемная комиссия
+{% endblock %}
+    </h3></div>
+</div>
+
+<div id="content">
+{% block content %}
+
+{% endblock %}
+</div>
+
+<div id="news_box">
+<div id="content_news_box">
+	<div id="news1">
+		<div id="name_news1"><a href="http://abiturient.ulsu.ru/news/">Обучаемся на
+подготовительных курсах</a></div>
+		<div id="content_news"><p>Предлагаем Вам ознакомиться с основными формами подготовки к сдаче Единого государственного экзамена (ЕГЭ) и поступлению в вуз, предлагаемыми Ульяновским государственным университетом. Каждая из форм обучения предполагает заключение трехстороннего договора (слушатель – родитель – университет) и зачисление обучающегося как слушателя в УлГУ.<a href="#">Далее</a></p></div>
+	</div>
+	<div id="news2">
+		<div id="name_news2"><a href="http://abiturient.ulsu.ru/news/">Факультет математики и информационных технологий</a></div>
+		<div id="content_news">
+        <p>Факультет математики и информационных технологий создан в 2006 г. путем слияния двух факультетов: механико-математического и факультета информационных технологий и телекоммуникаций.Факультет математики и информационных технологий создан в 2006 г. путем слияния двух факультетов: механико-математического и факультета информационных технологий и телекоммуникаций.</p></div>
+	</div>
+	<div id="news3">
+		<div id="name_news3"><a href="http://abiturient.ulsu.ru/news/">Обучаемся на
+подготовительных курсах</a></div>
+		<div id="content_news"><p>Предлагаем Вам ознакомиться с основными формами подготовки к сдаче Единого государственного экзамена (ЕГЭ) и поступлению в вуз, предлагаемыми Ульяновским государственным университетом. Каждая из форм обучения предполагает заключение трехстороннего договора (слушатель – родитель – университет) и зачисление обучающегося как слушателя в УлГУ.</p></div>
+	</div>
+	</div>
+	
+</div>
+
+<div style="clear:both; height:50px;"></div>
+<div id="banner">
+<div id="content_banner">
+		
+            <div id="banner1">
+               <a href="#">
+				<div id="name_banner1">
+                    <p>Выпуск</p>
+                </div>
+                <div id="name_banner1_big">
+                    <p>Магистратура<br/> факультета управления</p>
+                </div>
+                <img src="{{STATIC_URL}}image/banner.png">
+               </a>
+            </div>
+
+            <div id="banner2">
+               <a href="#">
+				<div id="name_banner2">
+                    <p>Выпуск</p>
+                </div>
+                <div id="name_banner2_big">
+                    <p>Test2</p>
+                </div>
+                <img src="{{STATIC_URL}}image/banner.png">
+               </a>
+            </div>
+
+            <div id="banner3">
+               <a href="#">
+				<div id="name_banner3">
+                    <p>Выпуск</p>
+                </div>
+                <div id="name_banner3_big">
+                    <p>Test2</p>
+                </div>
+                <img src="{{STATIC_URL}}image/banner.png">
+               </a>
+            </div>
+
+            <div id="banner4">
+               <a href="#">
+				<div id="name_banner4">
+                    <p>Выпуск</p>
+                </div>
+                <div id="name_banner4_big">
+                    <p>Test2</p>
+                </div>
+                <img src="{{STATIC_URL}}image/banner.png">
+               </a>
+            </div>
+
+            <div id="banner1">
+               <a href="#">
+				<div id="name_banner1">
+                    <p>Выпуск</p>
+                </div>
+                <div id="name_banner1_big">
+                    <p>Test2</p>
+                </div>
+                <img src="{{STATIC_URL}}image/banner.png">
+               </a>
+            </div>
+
+            <div id="banner2">
+               <a href="#">
+				<div id="name_banner2">
+                    <p>Выпуск</p>
+                </div>
+                <div id="name_banner2_big">
+                    <p>Test2</p>
+                </div>
+                <img src="{{STATIC_URL}}image/banner.png">
+               </a>
+            </div>
+
+            <div id="banner3">
+               <a href="#">
+				<div id="name_banner3">
+                    <p>Выпуск</p>
+                </div>
+                <div id="name_banner3_big">
+                    <p>Test2</p>
+                </div>
+                <img src="{{STATIC_URL}}image/banner.png">
+               </a>
+            </div>
+
+</div>
+</div>
+<div style="clear:both; height:50px;"></div>
+<div id="footer"><p>Copyright © <a href="http://www.ulsu.ru">Ульяновский государственный университет</a>, 2013 </p></div>
+</body>
+
+</html>
